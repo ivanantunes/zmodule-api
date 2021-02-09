@@ -5,13 +5,9 @@
   "main": "src/index.ts",
   "scripts": {
     "postversion": "git push && git push --tags",
-    "version:patch": "npm version patch",
-    "version:minor": "npm version minor",
-    "version:major": "npm version major",
-    "publish": "npm publish",
-    "dist:patch": "npm run version:patch && npm run publish",
-    "dist:minor": "npm run version:minor && npm run publish",
-    "dist:major": "npm run version:major && npm run publish",
+    "dist:patch": "npm version patch && npm publish",
+    "dist:minor": "npm version minor && npm publish",
+    "dist:major": "npm version major && npm publish",
     "start": "ts-node src/index.ts",
     "watch": "nodemon -e ts -w ./src -x npm run watch:serve",
     "watch:serve": "ts-node src/index.ts"
