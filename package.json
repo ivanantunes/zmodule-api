@@ -2,7 +2,9 @@
   "name": "zmodule-api",
   "version": "0.0.1",
   "description": "A library created with the concept of facilitating the creation of api.",
-  "main": "src/index.ts",
+  "bin": "lib/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "postversion": "git push && git push --tags",
     "dist:patch": "npm version patch && npm publish",
