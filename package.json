@@ -1,0 +1,49 @@
+{
+  "name": "zmodule-api",
+  "version": "0.0.0",
+  "description": "A library created with the concept of facilitating the creation of api.",
+  "main": "src/index.ts",
+  "scripts": {
+    "postversion": "git push && git push --tags",
+    "version:patch": "npm run version patch",
+    "version:minor": "npm run version minor",
+    "version:major": "npm run version major",
+    "publish": "npm publish",
+    "dist:patch": "npm run version:patch && npm run publish",
+    "dist:minor": "npm run version:minor && npm run publish",
+    "dist:major": "npm run version:major && npm run publish",
+    "start": "ts-node src/index.ts",
+    "watch": "nodemon -e ts -w ./src -x npm run watch:serve",
+    "watch:serve": "ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivanantunes/zmodule-api.git"
+  },
+  "keywords": [
+    "api",
+    "module",
+    "node",
+    "js",
+    "javascript",
+    "rest",
+    "typescript"
+  ],
+  "author": "Ivan Antunes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ivanantunes/zmodule-api/issues"
+  },
+  "homepage": "https://github.com/ivanantunes/zmodule-api#readme",
+  "devDependencies": {
+    "@types/node": "^14.14.25",
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "rxjs": "^6.6.3",
+    "tslib": "^2.1.0",
+    "tslint": "^6.1.3"
+  }
+}
