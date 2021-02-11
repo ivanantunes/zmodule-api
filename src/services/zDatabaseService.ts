@@ -28,6 +28,12 @@ export class zDatabaseService {
    */
   private connection: Sequelize | null = null;
 
+  /**
+   * Stores if initialized service.
+   * @var {boolean} isInitialized
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
   private isInitialized = false;
 
   /**
