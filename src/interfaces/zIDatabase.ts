@@ -27,6 +27,8 @@ export interface zITableDB {
  * @property {string[] | string} fieldDefaultValue - Field default values?
  * @property {zIRelationDB} fieldRelation - Field Relation?
  * @property {number} fieldSize - Field Size?
+ * @property {number} fieldPrecision - Field Precision?
+ * @property {'tiny' | 'medium' | 'long'} fieldTextLength - Field Text Length?
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
@@ -40,6 +42,8 @@ export interface zIFieldDB {
     fieldDefaultValue?: string[] | string;
     fieldRelation?: zIRelationDB;
     fieldSize?: number;
+    fieldPrecision?: number;
+    fieldTextLength?: 'tiny' | 'medium' | 'long';
 }
 
 /**

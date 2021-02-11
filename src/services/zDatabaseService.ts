@@ -1,8 +1,9 @@
 import { zConfigDB } from '../configs';
-import { Dialect, Sequelize } from 'sequelize';
+import { DataType, DataTypes, Dialect, Sequelize } from 'sequelize';
 import { from, Observable, of, throwError } from 'rxjs';
-import { zIConfigDB } from '../interfaces';
+import { zIConfigDB, zIFieldDB } from '../interfaces';
 import { catchError, delay, retryWhen, switchMap, tap } from 'rxjs/operators';
+import { zEFieldTypeDB } from '../enums';
 
 /**
  * Serviço que contém as funções relacionada ao banco de dados.
@@ -130,6 +131,68 @@ export class zDatabaseService {
         );
       }));
 
+  }
+
+  /**
+   * Function to get field type.
+   * @param {zIFieldDB} field - Database Field
+   * @returns Observable<DataType>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public getFieldType(field: zIFieldDB): Observable<DataType> {
+    switch (field.fieldType) {
+      case zEFieldTypeDB.INT:
+        return of(
+          DataTypes.INTEGER({
+            length: field.fieldSize,
+            precision: field.fieldPrecision
+          })
+        );
+      case zEFieldTypeDB.BIGINT:
+        return of(
+          DataTypes.BIGINT({
+            length: field.fieldSize
+          })
+        );
+      case zEFieldTypeDB.VARCHAR:
+        return of(
+          DataTypes.STRING({
+            length: field.fieldSize
+          })
+        );
+      case zEFieldTypeDB.TEXT:
+        return of(
+          DataTypes.TEXT({
+            length: field.fieldTextLength,
+          })
+        );
+      case zEFieldTypeDB.FLOAT:
+        return of(
+          DataTypes.FLOAT({
+            length: field.fieldSize,
+            decimals: field.fieldPrecision
+          })
+        );
+      case zEFieldTypeDB.BOOLEAN:
+        return of(DataTypes.BOOLEAN);
+      case zEFieldTypeDB.TIME:
+        return of(DataTypes.TIME);
+      case zEFieldTypeDB.DATE:
+        return of(DataTypes.DATE({
+          length: field.fieldSize
+        }));
+      case zEFieldTypeDB.ENUM:
+          if (!Array.isArray(field.fieldDefaultValue)) {
+            // TODO: Add Translate
+            return throwError('Field Type Enum is not array.');
+          }
+
+          return of(DataTypes.ENUM(...field.fieldDefaultValue as string[]));
+      default:
+        // TODO: Add Translate
+        return throwError('Field Type is not Supported.');
+    }
   }
 
   /**
