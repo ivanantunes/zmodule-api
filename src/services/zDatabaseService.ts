@@ -1,13 +1,12 @@
 import { zConfigDB } from '../configs';
 import { DataType, DataTypes, Dialect, Sequelize } from 'sequelize';
-import { from, Observable, of, throwError } from 'rxjs';
-import { zIConfigDB, zIFieldDB } from '../interfaces';
-import { catchError, delay, retryWhen, switchMap, tap } from 'rxjs/operators';
+import { concat, from, Observable, of, throwError } from 'rxjs';
+import { zIAttributeDB, zIConfigDB, zIFieldDB, zITableDB } from '../interfaces';
+import { catchError, delay, map, retryWhen, switchMap, tap, toArray } from 'rxjs/operators';
 import { zEFieldTypeDB } from '../enums';
 
 /**
  * Serviço que contém as funções relacionada ao banco de dados.
- * @namespace Services
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
@@ -15,7 +14,6 @@ export class zDatabaseService {
 
   /**
    * Stores zDatabaseService Service Instance.
-   * @var {zDatabaseService | null} instance
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
@@ -23,7 +21,6 @@ export class zDatabaseService {
 
   /**
    * Sequelize instance containing the database connection.
-   * @var {Sequelize | null} connection
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
@@ -31,14 +28,13 @@ export class zDatabaseService {
 
   /**
    * Stores if initialized service.
-   * @var {boolean} isInitialized
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
   private isInitialized = false;
 
   /**
-   * @constructor Executes the database connection function and stores it.
+   * Executes the database connection function and stores it.
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
@@ -183,16 +179,60 @@ export class zDatabaseService {
           length: field.fieldSize
         }));
       case zEFieldTypeDB.ENUM:
-          if (!Array.isArray(field.fieldDefaultValue)) {
-            // TODO: Add Translate
-            return throwError('Field Type Enum is not array.');
-          }
+        if (!field.fieldEnumValue) {
+          // TODO: Add Translate
+          return throwError('Field Type Enum is not array.');
+        }
 
-          return of(DataTypes.ENUM(...field.fieldDefaultValue as string[]));
+        return of(DataTypes.ENUM(...field.fieldEnumValue as string[]));
       default:
         // TODO: Add Translate
         return throwError('Field Type is not Supported.');
     }
+  }
+
+  /**
+   * Function to generate attributes table.
+   * @param {zITableDB} table - Table Generate Attributes
+   * @returns Observable<zIAttributeDB[]>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private generateAttribute(table: zITableDB): Observable<zIAttributeDB[]> {
+    return concat(...table.tableFields.map((field) => this.getFieldType(field).pipe(
+
+      switchMap((fieldType) => {
+
+        const baseAttribute: zIAttributeDB = {
+
+          [`${field.fieldName}`]: {
+            type: fieldType,
+            validate: field.fieldValidate,
+            defaultValue: field.fieldDefaultValue,
+            allowNull: field.fieldRequired,
+            unique: field.fieldUnique,
+            primaryKey: field.fieldPrimaryKey,
+            autoIncrement: field.fieldAutoIncrement,
+          }
+
+        };
+
+        if (field.fieldRelation) {
+          baseAttribute[field.fieldName].references = {
+            model: field.fieldRelation.tableName,
+            key: field.fieldRelation.fieldName
+          };
+        }
+
+        return of(baseAttribute);
+      })
+
+    ))).pipe(
+      toArray(),
+      map((attributes) => {
+        return attributes;
+      })
+    );
   }
 
   /**

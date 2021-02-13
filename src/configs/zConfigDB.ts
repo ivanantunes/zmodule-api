@@ -7,8 +7,7 @@ dotenv.config({
 
 /**
  * Contains the values that are used to configure the database.
- * @namespace Configs
- * @constant zConfigDB
+ * @constant {zIConfigDB} zConfigDB - Databse Config
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */

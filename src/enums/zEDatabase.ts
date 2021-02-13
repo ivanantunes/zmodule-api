@@ -1,6 +1,5 @@
 /**
  * Enum containing the types of the fields.
- * @namespace Enums
  * @enum {number} zEFieldTypeDB
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021

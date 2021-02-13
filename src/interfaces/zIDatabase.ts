@@ -1,8 +1,8 @@
+import { DataType, ModelValidateOptions } from 'sequelize/types';
 import { zEFieldTypeDB } from '../enums';
 
 /**
  * Database Table.
- * @namespace Interfaces
  * @interface zITableDB
  * @property {string} tablename - Table Name
  * @property {zIFieldDB} tableFields - Fields contains in table
@@ -16,7 +16,6 @@ export interface zITableDB {
 
 /**
  * Database field interface. Using to create database field.
- * @namespace Interfaces
  * @interface zIFieldDB
  * @property {string} fieldName - Field Name
  * @property {zEFieldTypeDB} - Field Type
@@ -24,11 +23,13 @@ export interface zITableDB {
  * @property {boolean} fieldRequired - Field is Required?
  * @property {boolean} fieldAutoIncrement - Field is Auto Increment?
  * @property {boolean} fieldUnique - Field is Unique?
- * @property {string[] | string} fieldDefaultValue - Field default values?
+ * @property {string} fieldDefaultValue - Field default values?
+ * @property {string[]} fieldEnumValue - Field enum values?
  * @property {zIRelationDB} fieldRelation - Field Relation?
  * @property {number} fieldSize - Field Size?
  * @property {number} fieldPrecision - Field Precision?
  * @property {'tiny' | 'medium' | 'long'} fieldTextLength - Field Text Length?
+ * @property {ModelValidateOptions} fieldValidate - Field Validate?
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
@@ -39,16 +40,17 @@ export interface zIFieldDB {
     fieldRequired: boolean;
     fieldAutoIncrement?: boolean;
     fieldUnique?: boolean;
-    fieldDefaultValue?: string[] | string;
+    fieldDefaultValue?: string;
+    fieldEnumValue?: string[];
     fieldRelation?: zIRelationDB;
     fieldSize?: number;
     fieldPrecision?: number;
     fieldTextLength?: 'tiny' | 'medium' | 'long';
+    fieldValidate?: ModelValidateOptions;
 }
 
 /**
  * Database relation field.
- * @namespace Interfaces
  * @interface zIRelationDB
  * @property {string} tablename - Table Name
  * @property {string} fieldName - Field Name
@@ -58,4 +60,27 @@ export interface zIFieldDB {
 export interface zIRelationDB {
     tableName: string;
     fieldName: string;
+}
+
+/**
+ * Database Attribute field.
+ * @interface zIAttributeDB
+ * @property {object} attr - Attribute Name
+ * @author Ivan Antunes <ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export interface zIAttributeDB {
+    [attr: string]: {
+        type: DataType;
+        primaryKey: boolean;
+        validate?: ModelValidateOptions;
+        defaultValue?: string;
+        allowNull?: boolean;
+        unique?: boolean;
+        autoIncrement?: boolean;
+        references?: {
+            model: string;
+            key: string;
+        }
+    };
 }

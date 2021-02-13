@@ -1,6 +1,5 @@
 /**
  * Database Configuration Interface.
- * @namespace Interfaces
  * @interface zIConfigDB
  * @property {string} DB_DIALECT - Database Type
  * @property {string} DB_HOST - Database Host
