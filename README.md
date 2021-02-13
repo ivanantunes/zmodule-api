@@ -13,3 +13,5 @@ A library created with the concept of facilitating the creation of api.
 <p align="center">
 <a href="https://nodei.co/npm/zmodule-api/"><img src="https://nodei.co/npm/zmodule-api.png?downloads=true&downloadRank=true&stars=true"></a>
 </p>
+
+[Lib Docs](https://ivanantunes.github.io/zmodule-api)
