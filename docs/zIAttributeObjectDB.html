@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Interface: zITableDB</title>
+    <title>JSDoc: Interface: zIAttributeObjectDB</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Interface: zITableDB</h1>
+    <h1 class="page-title">Interface: zIAttributeObjectDB</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>zITableDB</h2>
+        <h2>zIAttributeObjectDB</h2>
         
     
 </header>
@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Database Table.</div>
+            <div class="description">Database Attribute Object field.</div>
         
 
         
@@ -69,7 +69,76 @@
 
         <tr>
             
-                <td class="name"><code>tablename</code></td>
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">DataType</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Type Field</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>primaryKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Field Primary Key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>validate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ModelValidateOptions</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Field Validade?</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>defaultValue</code></td>
             
 
             <td class="type">
@@ -85,20 +154,20 @@
 
             
 
-            <td class="description last">Table Name.</td>
+            <td class="description last">Field Default Value?</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>tableFields</code></td>
+                <td class="name"><code>allowNull</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="zIFieldDB.html">zIFieldDB</a></span>
+<span class="param-type">boolean</span>
 
 
             
@@ -108,20 +177,20 @@
 
             
 
-            <td class="description last">Fields contains in table.</td>
+            <td class="description last">Field Allow Null?</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>tableOptions</code></td>
+                <td class="name"><code>unique</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">QueryInterfaceCreateTableOptions</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -131,7 +200,30 @@
 
             
 
-            <td class="description last">Options cantains in table?</td>
+            <td class="description last">Field Unique?</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>references</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Field References?</td>
         </tr>
 
     
@@ -180,7 +272,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interfaces_zIDatabase.ts.html">interfaces/zIDatabase.ts</a>, <a href="interfaces_zIDatabase.ts.html#line5">line 5</a>
+        <a href="interfaces_zIDatabase.ts.html">interfaces/zIDatabase.ts</a>, <a href="interfaces_zIDatabase.ts.html#line53">line 53</a>
     </li></ul></dd>
     
 
