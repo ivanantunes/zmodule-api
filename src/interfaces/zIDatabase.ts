@@ -1,17 +1,19 @@
-import { DataType, ModelValidateOptions } from 'sequelize/types';
+import { DataType, ModelValidateOptions, QueryInterfaceCreateTableOptions } from 'sequelize/types';
 import { zEFieldTypeDB } from '../enums';
 
 /**
  * Database Table.
  * @interface zITableDB
- * @property {string} tablename - Table Name
- * @property {zIFieldDB} tableFields - Fields contains in table
+ * @property {string} tablename - Table Name.
+ * @property {zIFieldDB} tableFields - Fields contains in table.
+ * @property {QueryInterfaceCreateTableOptions} tableOptions - Options cantains in table?
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
 export interface zITableDB {
     tableName: string;
     tableFields: zIFieldDB[];
+    tableOptions?: QueryInterfaceCreateTableOptions;
 }
 
 /**
@@ -21,6 +23,7 @@ export interface zITableDB {
  * @property {zEFieldTypeDB} - Field Type
  * @property {boolean} fieldPrimaryKey - Field is Primary key?
  * @property {boolean} fieldRequired - Field is Required?
+ * @property {boolean} fieldAllowNull - Field is Allow Null?
  * @property {boolean} fieldAutoIncrement - Field is Auto Increment?
  * @property {boolean} fieldUnique - Field is Unique?
  * @property {string} fieldDefaultValue - Field default values?
@@ -38,6 +41,7 @@ export interface zIFieldDB {
     fieldType: zEFieldTypeDB;
     fieldPrimaryKey: boolean;
     fieldRequired: boolean;
+    fieldAllowNull?: boolean;
     fieldAutoIncrement?: boolean;
     fieldUnique?: boolean;
     fieldDefaultValue?: string;
@@ -65,22 +69,37 @@ export interface zIRelationDB {
 /**
  * Database Attribute field.
  * @interface zIAttributeDB
- * @property {object} attr - Attribute Name
+ * @property {zIAttributeObjectDB} attr - Attribute Name
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
 export interface zIAttributeDB {
-    [attr: string]: {
-        type: DataType;
-        primaryKey: boolean;
-        validate?: ModelValidateOptions;
-        defaultValue?: string;
-        allowNull?: boolean;
-        unique?: boolean;
-        autoIncrement?: boolean;
-        references?: {
-            model: string;
-            key: string;
-        }
+    [attr: string]: zIAttributeObjectDB;
+}
+
+/**
+ * Database Attribute Object field.
+ * @interface zIAttributeObjectDB
+ * @property {DataType} type - Type Field
+ * @property {boolean} primaryKey - Field Primary Key
+ * @property {ModelValidateOptions} validate - Field Validade?
+ * @property {string} defaultValue - Field Default Value?
+ * @property {boolean} allowNull - Field Allow Null?
+ * @property {boolean} unique - Field Unique?
+ * @property {object} references - Field References?
+ * @author Ivan Antunes <ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export interface zIAttributeObjectDB {
+    type: DataType;
+    primaryKey: boolean;
+    validate?: ModelValidateOptions;
+    defaultValue?: string;
+    allowNull?: boolean;
+    unique?: boolean;
+    autoIncrement?: boolean;
+    references?: {
+        model: string;
+        key: string;
     };
 }
