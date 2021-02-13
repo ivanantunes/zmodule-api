@@ -1,7 +1,7 @@
 import { zConfigDB } from '../configs';
 import { DataType, DataTypes, Dialect, Sequelize } from 'sequelize';
 import { concat, from, Observable, of, throwError } from 'rxjs';
-import { zIAttributeDB, zIConfigDB, zIFieldDB, zITableDB } from '../interfaces';
+import { zIAttributeDB, zIAttributeObjectDB, zIConfigDB, zIFieldDB, zITableDB } from '../interfaces';
 import { catchError, delay, map, retryWhen, switchMap, tap, toArray } from 'rxjs/operators';
 import { zEFieldTypeDB } from '../enums';
 
@@ -136,7 +136,7 @@ export class zDatabaseService {
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
-  public getFieldType(field: zIFieldDB): Observable<DataType> {
+  private getFieldType(field: zIFieldDB): Observable<DataType> {
     switch (field.fieldType) {
       case zEFieldTypeDB.INT:
         return of(
@@ -199,6 +199,7 @@ export class zDatabaseService {
    * @copyright Ivan Antunes 2021
    */
   private generateAttribute(table: zITableDB): Observable<zIAttributeDB[]> {
+
     return concat(...table.tableFields.map((field) => this.getFieldType(field).pipe(
 
       switchMap((fieldType) => {
@@ -209,7 +210,7 @@ export class zDatabaseService {
             type: fieldType,
             validate: field.fieldValidate,
             defaultValue: field.fieldDefaultValue,
-            allowNull: field.fieldRequired,
+            allowNull: field.fieldAllowNull,
             unique: field.fieldUnique,
             primaryKey: field.fieldPrimaryKey,
             autoIncrement: field.fieldAutoIncrement,
@@ -233,6 +234,79 @@ export class zDatabaseService {
         return attributes;
       })
     );
+
+  }
+
+  /**
+   * Function to check field in table.
+   * @param {string} tableName - Table Name.
+   * @param {string} fieldName - Field Name.
+   * @returns Observable<boolean>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private checkField(tableName: string, fieldName: string): Observable<boolean> {
+    return this.getConnection().pipe(
+
+      switchMap((con) => from(con.getQueryInterface().describeTable(tableName)).pipe(
+
+        catchError((err) => {
+          // TODO: Add Translate
+          return throwError(`Failed check field. tru again: ${err}`);
+        }),
+
+        map((fields) => {
+          const keys = Object.keys(fields);
+
+          if (keys.find((key) => key === fieldName || key === fieldName.toLowerCase() || key === fieldName.toUpperCase())) {
+            return true;
+          } else {
+            return false;
+          }
+
+        })
+      ))
+
+    );
+
+  }
+
+  /**
+   * Function to check table in database.
+   * @param {string} tableName - Table Name.
+   * @returns Observable<boolean>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private checkTable(tableName: string): Observable<boolean> {
+
+    return this.getConnection().pipe(
+
+      switchMap((con) => from(con.getQueryInterface().showAllTables()).pipe(
+
+        catchError((err) => {
+          // TODO: Add Translate
+          return throwError(`Falied Check Table. try agian: ${err}`);
+        }),
+
+        map((tables: any[]) => {
+
+          if (tables.find((t: { tableName: string, schema: string }) =>
+            t.tableName === tableName ||
+            t.tableName === tableName.toLowerCase() ||
+            t.tableName === tableName.toUpperCase()
+          )) {
+            return true;
+          } else {
+            return false;
+          }
+
+        })
+
+      ))
+
+    );
+
   }
 
   /**
@@ -261,5 +335,117 @@ export class zDatabaseService {
         delay(5000)
       ))
     );
+  }
+
+  /**
+   * Function to create tables and add columns.
+   * @param {zITableDB} table - Table.
+   * @returns Observable<any>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public createTable(table: zITableDB): Observable<any> {
+    // TODO: add Translate
+    return this.getConnection().pipe(
+
+      switchMap((con) => this.generateAttribute(table).pipe(
+
+        switchMap((attributes) => this.checkTable(table.tableName).pipe(
+
+          catchError((err) => {
+            console.log(`Internal Error: ${err}`);
+            return of(false);
+          }),
+
+          switchMap((isTable) => {
+
+            console.log(`Table ${table.tableName} Exists: ${isTable}`);
+
+            if (isTable) {
+
+              return concat(...table.tableFields.map((field) => this.checkField(table.tableName, field.fieldName).pipe(
+
+                catchError((err) => {
+                  console.log(`Internal Error: ${err}`);
+                  return of(false);
+                }),
+
+                switchMap((isField) => {
+                  console.log(`Field ${field.fieldName} Exists: ${isField}`);
+
+                  if (isField) {
+                    return of(1);
+                  }
+
+                  return this.getFieldType(field).pipe(
+
+                    switchMap((fieldType) => {
+
+                      const baseAttr: zIAttributeObjectDB = {
+                        type: fieldType,
+                        primaryKey: field.fieldPrimaryKey,
+                        autoIncrement: field.fieldAutoIncrement,
+                        allowNull: field.fieldAllowNull,
+                        validate: field.fieldValidate,
+                        defaultValue: field.fieldDefaultValue,
+                        unique: field.fieldUnique
+                      };
+
+                      if (field.fieldRelation) {
+                        baseAttr.references = {
+                          model: field.fieldRelation.tableName,
+                          key: field.fieldRelation.fieldName
+                        };
+                      }
+
+                      return from(con.getQueryInterface().addColumn(
+                        table.tableName,
+                        field.fieldName,
+                        baseAttr,
+                        table.tableOptions
+                      )).pipe(
+
+                        catchError((err) => {
+                          return throwError(`Falied Create Field: ${err}`);
+                        }),
+
+                        tap(() => console.log(`Field Created Successfully: ${field.fieldName}`))
+
+                      );
+
+                    })
+
+                  );
+
+                })
+
+              ))).pipe(
+                toArray()
+              );
+
+            }
+
+            return from(con.getQueryInterface().createTable(
+              table.tableName,
+              Object.assign({}, ...attributes.map((attr) => attr)),
+              table.tableOptions
+            )).pipe(
+
+              catchError((err) => {
+                return throwError(`Falied Create Table: ${err}`);
+              }),
+
+              tap(() => console.log(`Table Created Successfully: ${table.tableName}`))
+
+            );
+
+          })
+
+        ))
+
+      ))
+
+    );
+
   }
 }
