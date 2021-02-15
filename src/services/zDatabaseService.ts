@@ -193,47 +193,90 @@ export class zDatabaseService {
 
   /**
    * Function to generate attributes table.
-   * @param {zITableDB} table - Table Generate Attributes
+   * @param {zITableDB | zIFieldDB} data - Table Generate Attributes | Field Generate Attributes
    * @returns Observable<zIAttributeDB[]>
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
-  private generateAttribute(table: zITableDB): Observable<zIAttributeDB[]> {
+  private generateAttribute(data?: zITableDB | zIFieldDB): Observable<zIAttributeObjectDB | zIAttributeDB[]> {
 
-    return concat(...table.tableFields.map((field) => this.getFieldType(field).pipe(
+    if (data) {
+      if (Object.prototype.constructor(data).fieldName) {
+        const field = data as zIFieldDB;
 
-      switchMap((fieldType) => {
+        return this.getFieldType(field).pipe(
 
-        const baseAttribute: zIAttributeDB = {
+          switchMap((fieldType) => {
 
-          [`${field.fieldName}`]: {
-            type: fieldType,
-            validate: field.fieldValidate,
-            defaultValue: field.fieldDefaultValue,
-            allowNull: field.fieldAllowNull,
-            unique: field.fieldUnique,
-            primaryKey: field.fieldPrimaryKey,
-            autoIncrement: field.fieldAutoIncrement,
-          }
+            const baseAttribute: zIAttributeObjectDB = {
+              type: fieldType,
+              primaryKey: field.fieldPrimaryKey,
+              autoIncrement: field.fieldAutoIncrement,
+              allowNull: field.fieldAllowNull ? field.fieldAllowNull : false,
+              validate: field.fieldValidate,
+              defaultValue: field.fieldDefaultValue,
+              unique: field.fieldUnique
+            };
 
-        };
+            if (field.fieldRelation) {
+              baseAttribute.references = {
+                model: field.fieldRelation.tableName,
+                key: field.fieldRelation.fieldName
+              };
+            }
 
-        if (field.fieldRelation) {
-          baseAttribute[field.fieldName].references = {
-            model: field.fieldRelation.tableName,
-            key: field.fieldRelation.fieldName
-          };
-        }
+            return of(baseAttribute);
+          })
 
-        return of(baseAttribute);
-      })
+        );
+      }
 
-    ))).pipe(
-      toArray(),
-      map((attributes) => {
-        return attributes;
-      })
-    );
+      if (Object.prototype.constructor(data).tableName) {
+        const table = data as zITableDB;
+
+        return concat(...table.tableFields.map((f) => this.getFieldType(f).pipe(
+
+          switchMap((fieldType) => {
+
+            const baseAttribute: zIAttributeDB = {
+
+              [`${f.fieldName}`]: {
+                type: fieldType,
+                validate: f.fieldValidate,
+                defaultValue: f.fieldDefaultValue,
+                allowNull: f.fieldAllowNull ? f.fieldAllowNull : false,
+                unique: f.fieldUnique,
+                primaryKey: f.fieldPrimaryKey,
+                autoIncrement: f.fieldAutoIncrement,
+              }
+
+            };
+
+            if (f.fieldRelation) {
+              baseAttribute[f.fieldName].references = {
+                model: f.fieldRelation.tableName,
+                key: f.fieldRelation.fieldName
+              };
+            }
+
+            return of(baseAttribute);
+          })
+
+        ))).pipe(
+          toArray(),
+          map((attributes) => {
+            return attributes;
+          })
+        );
+      }
+
+      // TODO: add translate
+      return throwError('Failed to Generate Attributes');
+
+    }
+
+    // TODO: add translate
+    return throwError('Failed to Generate Attributes is not defined.');
 
   }
 
@@ -348,86 +391,63 @@ export class zDatabaseService {
     // TODO: add Translate
     return this.getConnection().pipe(
 
-      switchMap((con) => this.generateAttribute(table).pipe(
+      switchMap((con) => this.checkTable(table.tableName).pipe(
 
-        switchMap((attributes) => this.checkTable(table.tableName).pipe(
+        catchError((err) => {
+          console.log(`Internal Error: ${err}`);
+          return of(false);
+        }),
 
-          catchError((err) => {
-            console.log(`Internal Error: ${err}`);
-            return of(false);
-          }),
+        switchMap((isTable) => {
 
-          switchMap((isTable) => {
+          console.log(`Table ${table.tableName} Exists: ${isTable}`);
 
-            console.log(`Table ${table.tableName} Exists: ${isTable}`);
+          if (isTable) {
 
-            if (isTable) {
+            return concat(...table.tableFields.map((field) => this.checkField(table.tableName, field.fieldName).pipe(
 
-              return concat(...table.tableFields.map((field) => this.checkField(table.tableName, field.fieldName).pipe(
+              catchError((err) => {
+                console.log(`Internal Error: ${err}`);
+                return of(false);
+              }),
 
-                catchError((err) => {
-                  console.log(`Internal Error: ${err}`);
-                  return of(false);
-                }),
+              switchMap((isField) => {
+                console.log(`Field ${field.fieldName} Exists: ${isField}`);
 
-                switchMap((isField) => {
-                  console.log(`Field ${field.fieldName} Exists: ${isField}`);
+                if (isField) {
+                  return of(1);
+                }
 
-                  if (isField) {
-                    return of(1);
-                  }
+                return this.generateAttribute(field).pipe(
+                  switchMap((attr) => from(con.getQueryInterface().addColumn(
+                    table.tableName,
+                    field.fieldName,
+                    attr as zIAttributeObjectDB,
+                    table.tableOptions
+                  )).pipe(
 
-                  return this.getFieldType(field).pipe(
+                    catchError((err) => {
+                      return throwError(`Falied Create Field: ${err}`);
+                    }),
 
-                    switchMap((fieldType) => {
+                    tap(() => console.log(`Field Created Successfully: ${field.fieldName}`))
 
-                      const baseAttr: zIAttributeObjectDB = {
-                        type: fieldType,
-                        primaryKey: field.fieldPrimaryKey,
-                        autoIncrement: field.fieldAutoIncrement,
-                        allowNull: field.fieldAllowNull,
-                        validate: field.fieldValidate,
-                        defaultValue: field.fieldDefaultValue,
-                        unique: field.fieldUnique
-                      };
+                  ))
+                );
 
-                      if (field.fieldRelation) {
-                        baseAttr.references = {
-                          model: field.fieldRelation.tableName,
-                          key: field.fieldRelation.fieldName
-                        };
-                      }
+              })
 
-                      return from(con.getQueryInterface().addColumn(
-                        table.tableName,
-                        field.fieldName,
-                        baseAttr,
-                        table.tableOptions
-                      )).pipe(
+            ))).pipe(
+              toArray()
+            );
 
-                        catchError((err) => {
-                          return throwError(`Falied Create Field: ${err}`);
-                        }),
+          }
 
-                        tap(() => console.log(`Field Created Successfully: ${field.fieldName}`))
+          return from(this.generateAttribute(table).pipe(
 
-                      );
-
-                    })
-
-                  );
-
-                })
-
-              ))).pipe(
-                toArray()
-              );
-
-            }
-
-            return from(con.getQueryInterface().createTable(
+            switchMap((attributes) => from(con.getQueryInterface().createTable(
               table.tableName,
-              Object.assign({}, ...attributes.map((attr) => attr)),
+              Object.assign({}, ...(attributes as zIAttributeDB[]).map((attr) => attr)),
               table.tableOptions
             )).pipe(
 
@@ -437,11 +457,11 @@ export class zDatabaseService {
 
               tap(() => console.log(`Table Created Successfully: ${table.tableName}`))
 
-            );
+            ))
 
-          })
+          ));
 
-        ))
+        })
 
       ))
 
