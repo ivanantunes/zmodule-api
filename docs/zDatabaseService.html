@@ -658,7 +658,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line191">line 191</a>
+        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line221">line 221</a>
     </li></ul></dd>
     
 
@@ -815,7 +815,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line212">line 212</a>
+        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line242">line 242</a>
     </li></ul></dd>
     
 
@@ -1129,7 +1129,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line257">line 257</a>
+        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line308">line 308</a>
     </li></ul></dd>
     
 
@@ -1158,7 +1158,7 @@
 
         
 <div class="param-desc">
-    Observable<any>
+    Observable<unknown>
 </div>
 
 
@@ -1175,7 +1175,7 @@
     
 
     
-    <h4 class="name" id="generateAttribute"><span class="type-signature"></span>generateAttribute<span class="signature">(table)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="generateAttribute"><span class="type-signature"></span>generateAttribute<span class="signature">(data)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1219,13 +1219,16 @@
 
         <tr>
             
-                <td class="name"><code>table</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><a href="zITableDB.html">zITableDB</a></span>
+|
+
+<span class="param-type"><a href="zIFieldDB.html">zIFieldDB</a></span>
 
 
             
@@ -1235,7 +1238,7 @@
 
             
 
-            <td class="description last">Table Generate Attributes</td>
+            <td class="description last">Table Generate Attributes | Field Generate Attributes</td>
         </tr>
 
     
@@ -1394,7 +1397,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line233">line 233</a>
+        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -1749,6 +1752,163 @@
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="setTableModel"><span class="type-signature"></span>setTableModel<span class="signature">(table)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Function used to set table model.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>table</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="zITableDB.html">zITableDB</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Table.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li><a href="mailto:ivanantnes75@gmail.com">Ivan Antunes</a></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Ivan Antunes 2021</li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_zDatabaseService.ts.html">services/zDatabaseService.ts</a>, <a href="services_zDatabaseService.ts.html#line264">line 264</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Observable<ModelCtor<Model<any, any>>>
+</div>
+
+
+
+    
+
+
+
+
+
+        
     
 
     
@@ -1770,7 +1930,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Feb 13 2021 15:57:11 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 15 2021 19:25:51 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>
