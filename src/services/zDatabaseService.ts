@@ -1,5 +1,5 @@
 import { zConfigDB } from '../configs';
-import { DataType, DataTypes, Dialect, Sequelize } from 'sequelize';
+import { DataType, DataTypes, Dialect, Model, ModelCtor, Sequelize } from 'sequelize';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { zIAttributeDB, zIAttributeObjectDB, zIConfigDB, zIFieldDB, zITableDB } from '../interfaces';
 import { catchError, delay, map, retryWhen, switchMap, tap, toArray } from 'rxjs/operators';
@@ -353,6 +353,45 @@ export class zDatabaseService {
   }
 
   /**
+   * Function used to set table model.
+   * @param {zITableDB} table - Table.
+   * @returns Observable<ModelCtor<Model<any, any>>>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private setTableModel(table: zITableDB): Observable<ModelCtor<Model<any, any>>> {
+    return this.getConnection().pipe(
+      switchMap((con) => this.generateAttribute(table).pipe(
+
+        switchMap((attribute) => {
+
+          const model = con.define(
+            table.tableName,
+            Object.assign({}, ...(attribute as zIAttributeDB[]).map((attr) => attr)),
+            {...table.tableOptions, timestamps: false, tableName: table.tableName}
+          );
+
+          table.tableFields.map((field) => {
+
+            if (field.fieldRelation) {
+              model.hasOne(
+                con.models[field.fieldRelation.tableName],
+                {
+                  foreignKey: field.fieldRelation.fieldName,
+                  sourceKey: field.fieldName
+                }
+              );
+            }
+
+          });
+
+          return of(model);
+
+        }))
+    ));
+  }
+
+  /**
    * Function to pick up the connection.
    * @returns Observable<Sequelize>
    * @author Ivan Antunes <ivanantnes75@gmail.com>
@@ -383,11 +422,11 @@ export class zDatabaseService {
   /**
    * Function to create tables and add columns.
    * @param {zITableDB} table - Table.
-   * @returns Observable<any>
+   * @returns Observable<unknown>
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
-  public createTable(table: zITableDB): Observable<any> {
+  public createTable(table: zITableDB): Observable<unknown> {
     // TODO: add Translate
     return this.getConnection().pipe(
 
@@ -461,10 +500,15 @@ export class zDatabaseService {
 
           ));
 
-        })
+        }),
 
-      ))
+        switchMap(() => this.setTableModel(table).pipe(
 
+          tap(() => console.log(`Table Model defined Successfully: ${table.tableName}`))
+
+        ))
+
+      )),
     );
 
   }
