@@ -36,6 +36,7 @@
   "homepage": "https://github.com/ivanantunes/zmodule-api#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "i18next": "^19.8.7",
     "mariadb": "^2.5.2",
     "mysql2": "^2.2.5",
     "pg": "^8.5.1",
