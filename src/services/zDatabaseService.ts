@@ -192,7 +192,7 @@ export class zDatabaseService {
       case zEFieldTypeDB.BLOB:
         return of(DataTypes.BLOB({
           length: field.fieldTextLength
-        }))
+        }));
       default:
         return throwError(this.tService.t('lbl_db_fail_type_support'));
     }
