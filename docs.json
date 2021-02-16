@@ -10,6 +10,7 @@
         "include": [
             "src/configs/index.ts",
             "src/configs/zConfigDB.ts",
+            "src/configs/zConfigModule.ts",
 
             "src/controllers/index.ts",
 
@@ -19,9 +20,15 @@
             "src/interfaces/index.ts",
             "src/interfaces/zIConfigs.ts",
             "src/interfaces/zIDatabase.ts",
+            "src/interfaces/zITranslate.ts",
+
+            "src/locale/index.ts",
+            "src/locale/zLgnGeneric.ts",
+            "src/locale/zLgnDatabase.ts",
 
             "src/services/index.ts",
-            "src/services/zDatabaseService.ts"
+            "src/services/zDatabaseService.ts",
+            "src/services/zTranslateService.ts"
         ],
         "includePattern": "\\.(jsx|js|ts|tsx)$"
     }

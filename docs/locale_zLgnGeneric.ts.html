@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: configs/index.ts</title>
+    <title>JSDoc: Source: locale/zLgnGeneric.ts</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: configs/index.ts</h1>
+    <h1 class="page-title">Source: locale/zLgnGeneric.ts</h1>
 
     
 
@@ -26,14 +26,28 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Export File of Configuration Modules.
- * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+            <pre class="prettyprint source linenums"><code>import { zITranslateData } from '../interfaces';
+
+/**
+ * Contains Generic Translate Data.
+ * @constant zLgnGeneric
+ * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
  * @copyright Ivan Antunes 2021
  */
-
-export * from './zConfigDB';
-export * from './zConfigModule';
+export const zLgnGeneric: zITranslateData = {
+    pt: {
+        gnc_internal_server_error: 'Erro Interno no Servidor:',
+        gnc_lbl_exists: 'Existe',
+        gnc_lbl_table: 'Tabela',
+        gnc_lbl_field: 'Campo',
+    },
+    en: {
+        gnc_internal_server_error: 'Server Internal Error:',
+        gnc_lbl_exists: 'Exists',
+        gnc_lbl_table: 'Table',
+        gnc_lbl_field: 'Field',
+    }
+};
 </code></pre>
         </article>
     </section>

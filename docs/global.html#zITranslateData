@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Interface: zIAttributeObjectDB</title>
+    <title>JSDoc: Interface: zITranslateData</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Interface: zIAttributeObjectDB</h1>
+    <h1 class="page-title">Interface: zITranslateData</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>zIAttributeObjectDB</h2>
+        <h2>zITranslateData</h2>
         
     
 </header>
@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Database Attribute Object field.</div>
+            <div class="description">Module Translate Data Interface.</div>
         
 
         
@@ -69,13 +69,13 @@
 
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>en</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">DataType</span>
+<span class="param-type">any</span>
 
 
             
@@ -85,20 +85,20 @@
 
             
 
-            <td class="description last">Type Field</td>
+            <td class="description last">English Translate Data</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>primaryKey</code></td>
+                <td class="name"><code>pt</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">any</span>
 
 
             
@@ -108,122 +108,7 @@
 
             
 
-            <td class="description last">Field Primary Key</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>validate</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ModelValidateOptions</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Field Validade?</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>defaultValue</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Field Default Value?</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>allowNull</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Field Allow Null?</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>unique</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Field Unique?</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>references</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Field References?</td>
+            <td class="description last">Portuguese Translate Data</td>
         </tr>
 
     
@@ -255,7 +140,7 @@
     <dt class="tag-author">Author:</dt>
     <dd class="tag-author">
         <ul>
-            <li><a href="mailto:ivanantnes75@gmail.com">Ivan Antunes</a></li>
+            <li><a href="mailto:lucas.zaia30@gmail.com">Lucas Zaia</a></li>
         </ul>
     </dd>
     
@@ -272,7 +157,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interfaces_zIDatabase.ts.html">interfaces/zIDatabase.ts</a>, <a href="interfaces_zIDatabase.ts.html#line53">line 53</a>
+        <a href="interfaces_zITranslate.ts.html">interfaces/zITranslate.ts</a>, <a href="interfaces_zITranslate.ts.html#line3">line 3</a>
     </li></ul></dd>
     
 

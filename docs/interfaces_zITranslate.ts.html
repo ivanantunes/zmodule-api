@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: configs/index.ts</title>
+    <title>JSDoc: Source: interfaces/zITranslate.ts</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: configs/index.ts</h1>
+    <h1 class="page-title">Source: interfaces/zITranslate.ts</h1>
 
     
 
@@ -27,13 +27,17 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Export File of Configuration Modules.
- * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+ * Module Translate Data Interface.
+ * @interface zITranslateData
+ * @property {any} en - English Translate Data
+ * @property {any} pt - Portuguese Translate Data
+ * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
  * @copyright Ivan Antunes 2021
  */
-
-export * from './zConfigDB';
-export * from './zConfigModule';
+export interface zITranslateData {
+    en: any;
+    pt: any;
+}
 </code></pre>
         </article>
     </section>

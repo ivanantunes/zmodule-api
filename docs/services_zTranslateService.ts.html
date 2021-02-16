@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/zTranslateService.ts</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/zTranslateService.ts</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { zITranslateData } from './../interfaces';
+import i18next, { TFunction } from 'i18next';
+import { zConfigModule } from './../configs';
+import {
+    zLgnGeneric,
+    zLgnDatabase
+} from '../locale';
+
+/**
+ * Module translation service.
+ * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export class zTranslateService {
+    /**
+     * Stores zTranslateService Instance.
+     * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    private static instance: zTranslateService | null;
+
+    /**
+     * Perform the translation initialization and check the dates.
+     * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    private constructor() {
+        if (!zConfigModule.MOD_LANG_PATH) {
+            throw new Error('Language Path Not Defined. Use name translate.');
+        }
+
+        const data: zITranslateData = require(zConfigModule.MOD_LANG_PATH).translate;
+
+        const pt = {
+            translation: {
+                ...data.pt,
+                ...zLgnGeneric.pt,
+                ...zLgnDatabase.pt
+            }
+        };
+        const en = {
+            translation: {
+                ...data.en,
+                ...zLgnGeneric.en,
+                ...zLgnDatabase.en
+            }
+        };
+
+        i18next.init({
+            debug: false,
+            fallbackLng: zConfigModule.MOD_LANG,
+            resources: {
+                pt,
+                en
+            }
+        }, (err, t) => {
+            if (err) {
+                throw new Error('Failed to Initialized i18next.');
+            }
+            this.t = t.bind(this);
+        });
+
+    }
+
+    /**
+     * Function used to get instance of zTranslateService
+     * @returns zTranslateService
+     * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public static getInstance(): zTranslateService {
+        if (!zTranslateService.instance) {
+            zTranslateService.instance = new zTranslateService();
+        }
+        return zTranslateService.instance;
+    }
+
+    /**
+     * Function used to destroy instance of zTranslateService
+     * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public static destroyInstance(): void {
+        zTranslateService.instance = null;
+    }
+
+    /**
+     * Function used to Translate.
+     * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public t: TFunction = () => {
+        throw Error('Translate Service is Not Initialized.');
+    }
+
+    /**
+     * Function define current language.
+     * @param {string} lang - Language Translate.
+     * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public setCurrentLanguage(lang: string): void {
+        i18next.changeLanguage(lang);
+    }
+
+    /**
+     * Function get current Language.
+     * @returns string
+     * @author Lucas Zaia &lt;lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public getCurrentLanguage(): string {
+        return i18next.language;
+    }
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="zDatabaseService.html">zDatabaseService</a></li><li><a href="zTranslateService.html">zTranslateService</a></li></ul><h3>Interfaces</h3><ul><li><a href="zIAttributeDB.html">zIAttributeDB</a></li><li><a href="zIAttributeObjectDB.html">zIAttributeObjectDB</a></li><li><a href="zIConfigDB.html">zIConfigDB</a></li><li><a href="zIConfigModule.html">zIConfigModule</a></li><li><a href="zIFieldDB.html">zIFieldDB</a></li><li><a href="zIRelationDB.html">zIRelationDB</a></li><li><a href="zITableDB.html">zITableDB</a></li><li><a href="global.html#zITranslateData">zITranslateData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#zConfigDB">zConfigDB</a></li><li><a href="global.html#zConfigModule">zConfigModule</a></li><li><a href="global.html#zEFieldTypeDB">zEFieldTypeDB</a></li><li><a href="global.html#zLgnGeneric">zLgnGeneric</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 15 2021 23:58:37 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
