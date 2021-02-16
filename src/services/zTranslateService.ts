@@ -1,6 +1,10 @@
 import { zITranslateData } from './../interfaces';
 import i18next, { TFunction } from 'i18next';
 import { zConfigModule } from './../configs';
+import {
+    zLgnGeneric,
+    zLgnDatabase
+} from '../locale';
 
 /**
  * Module translation service.
@@ -16,12 +20,11 @@ export class zTranslateService {
     private static instance: zTranslateService | null;
 
     /**
-     * Executes the database connection function and stores it.
+     * Perform the translation initialization and check the dates.
      * @author Lucas Zaia <lucas.zaia30@gmail.com>
      * @copyright Ivan Antunes 2021
      */
     private constructor() {
-        console.log(__dirname);
         if (!zConfigModule.MOD_LANG_PATH) {
             throw new Error('Language Path Not Defined. Use name translate.');
         }
@@ -30,12 +33,16 @@ export class zTranslateService {
 
         const pt = {
             translation: {
-                ...data.pt
+                ...data.pt,
+                ...zLgnGeneric.pt,
+                ...zLgnDatabase.pt
             }
         };
         const en = {
             translation: {
-                ...data.en
+                ...data.en,
+                ...zLgnGeneric.en,
+                ...zLgnDatabase.en
             }
         };
 
@@ -77,14 +84,31 @@ export class zTranslateService {
         zTranslateService.instance = null;
     }
 
+    /**
+     * Function used to Translate.
+     * @author Lucas Zaia <lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
     public t: TFunction = () => {
         throw Error('Translate Service is Not Initialized.');
     }
 
+    /**
+     * Function define current language.
+     * @param {string} lang - Language Translate.
+     * @author Lucas Zaia <lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
     public setCurrentLanguage(lang: string): void {
         i18next.changeLanguage(lang);
     }
 
+    /**
+     * Function get current Language.
+     * @returns string
+     * @author Lucas Zaia <lucas.zaia30@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
     public getCurrentLanguage(): string {
         return i18next.language;
     }

@@ -4,6 +4,7 @@ import { concat, from, Observable, of, throwError } from 'rxjs';
 import { zIAttributeDB, zIAttributeObjectDB, zIConfigDB, zIFieldDB, zITableDB } from '../interfaces';
 import { catchError, delay, map, retryWhen, switchMap, tap, toArray } from 'rxjs/operators';
 import { zEFieldTypeDB } from '../enums';
+import { zTranslateService } from './zTranslateService';
 
 /**
  * Service that contains the functions related to the database.
@@ -34,6 +35,13 @@ export class zDatabaseService {
   private isInitialized = false;
 
   /**
+   * Stores instance zTranslateService.
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private tService = zTranslateService.getInstance();
+
+  /**
    * Executes the database connection function and stores it.
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
@@ -41,12 +49,10 @@ export class zDatabaseService {
   private constructor() {
     this.connectionDatabase(zConfigDB).subscribe((con) => {
       this.connection = con;
-      // TODO: Add Translate
-      console.log('Connected to the database successfully.');
+      console.log(this.tService.t('lbl_db_connection'));
       this.isInitialized = true;
     }, (err) => {
-      // TODO: add Translate
-      throw new Error(`Failed Conncection Database: ${err}`);
+      throw new Error(`$${this.tService.t('lbl_db_fail_connection')} ${err}`);
     });
   }
 
@@ -96,8 +102,7 @@ export class zDatabaseService {
       case 'mssql':
         return of('mssql');
       default:
-        // TODO: Add Translate.
-        return throwError('Dialect is not Supported.');
+        return throwError(this.tService.t('lbl_db_fail_dialect'));
     }
 
   }
@@ -180,14 +185,12 @@ export class zDatabaseService {
         }));
       case zEFieldTypeDB.ENUM:
         if (!field.fieldEnumValue) {
-          // TODO: Add Translate
-          return throwError('Field Type Enum is not array.');
+          return throwError(this.tService.t('lbl_db_fail_enum_type'));
         }
 
         return of(DataTypes.ENUM(...field.fieldEnumValue as string[]));
       default:
-        // TODO: Add Translate
-        return throwError('Field Type is not Supported.');
+        return throwError(this.tService.t('lbl_db_fail_type_support'));
     }
   }
 
@@ -270,13 +273,11 @@ export class zDatabaseService {
         );
       }
 
-      // TODO: add translate
-      return throwError('Failed to Generate Attributes');
+      return throwError(this.tService.t('lbl_db_fail_generate_attr'));
 
     }
 
-    // TODO: add translate
-    return throwError('Failed to Generate Attributes is not defined.');
+    return throwError(this.tService.t('lbl_db_fail_generate_attr_not_defined'));
 
   }
 
@@ -294,8 +295,7 @@ export class zDatabaseService {
       switchMap((con) => from(con.getQueryInterface().describeTable(tableName)).pipe(
 
         catchError((err) => {
-          // TODO: Add Translate
-          return throwError(`Failed check field. tru again: ${err}`);
+          return throwError(`${this.tService.t('lbl_db_fail_check_field')} ${err}`);
         }),
 
         map((fields) => {
@@ -328,8 +328,7 @@ export class zDatabaseService {
       switchMap((con) => from(con.getQueryInterface().showAllTables()).pipe(
 
         catchError((err) => {
-          // TODO: Add Translate
-          return throwError(`Falied Check Table. try agian: ${err}`);
+          return throwError(`${this.tService.t('lbl_db_fail_check_table')} ${err}`);
         }),
 
         map((tables: any[]) => {
@@ -403,8 +402,7 @@ export class zDatabaseService {
         obs.next(this.connection as Sequelize);
         return obs.complete();
       } else {
-        // TODO: Add Translate
-        return obs.error('Service Not Initialized.');
+        return obs.error(this.tService.t('sys_db_fail_service'));
       }
     })).pipe(
       catchError((err) => {
@@ -412,8 +410,7 @@ export class zDatabaseService {
         return throwError(err);
       }),
       retryWhen((err) => err.pipe(
-        // TODO: Add Translate
-        tap(() => console.log('Trying to get the connection again in 5 seconds')),
+        tap(() => console.log(this.tService.t('sys_db_fail_service_refresh'))),
         delay(5000)
       ))
     );
@@ -427,31 +424,30 @@ export class zDatabaseService {
    * @copyright Ivan Antunes 2021
    */
   public createTable(table: zITableDB): Observable<unknown> {
-    // TODO: add Translate
     return this.getConnection().pipe(
 
       switchMap((con) => this.checkTable(table.tableName).pipe(
 
         catchError((err) => {
-          console.log(`Internal Error: ${err}`);
+          console.log(`${this.tService.t('gnc_internal_server_error')} ${err}`);
           return of(false);
         }),
 
         switchMap((isTable) => {
 
-          console.log(`Table ${table.tableName} Exists: ${isTable}`);
+          console.log(`${this.tService.t('gnc_lbl_table')} ${table.tableName} ${this.tService.t('gnc_lbl_exists')}: ${isTable}`);
 
           if (isTable) {
 
             return concat(...table.tableFields.map((field) => this.checkField(table.tableName, field.fieldName).pipe(
 
               catchError((err) => {
-                console.log(`Internal Error: ${err}`);
+                console.log(`${this.tService.t('gnc_internal_server_error')} ${err}`);
                 return of(false);
               }),
 
               switchMap((isField) => {
-                console.log(`Field ${field.fieldName} Exists: ${isField}`);
+                console.log(`${this.tService.t('gnc_lbl_field')} ${field.fieldName} ${this.tService.t('gnc_lbl_exists')}: ${isField}`);
 
                 if (isField) {
                   return of(1);
@@ -466,10 +462,10 @@ export class zDatabaseService {
                   )).pipe(
 
                     catchError((err) => {
-                      return throwError(`Falied Create Field: ${err}`);
+                      return throwError(`${this.tService.t('lbl_db_fail_create_field')} ${err}`);
                     }),
 
-                    tap(() => console.log(`Field Created Successfully: ${field.fieldName}`))
+                    tap(() => console.log(`${this.tService.t('lbl_db_create_field')} ${field.fieldName}`))
 
                   ))
                 );
@@ -491,10 +487,10 @@ export class zDatabaseService {
             )).pipe(
 
               catchError((err) => {
-                return throwError(`Falied Create Table: ${err}`);
+                return throwError(`${this.tService.t('lbl_db_fail_create_table')} ${err}`);
               }),
 
-              tap(() => console.log(`Table Created Successfully: ${table.tableName}`))
+              tap(() => console.log(`${this.tService.t('lbl_db_create_table')} ${table.tableName}`))
 
             ))
 
@@ -504,7 +500,7 @@ export class zDatabaseService {
 
         switchMap(() => this.setTableModel(table).pipe(
 
-          tap(() => console.log(`Table Model defined Successfully: ${table.tableName}`))
+          tap(() => console.log(`${this.tService.t('lbl_db_model_defined')} ${table.tableName}`))
 
         ))
 
