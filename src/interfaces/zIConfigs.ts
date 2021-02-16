@@ -21,7 +21,6 @@ export interface zIConfigDB {
 
 /**
  * Module Configuration Interface.
- * @namespace Interfaces
  * @interface zIConfigModule
  * @property {string} MOD_LANG - Language system
  * @author Lucas Zaia <lucas.zaia30@gmail.com>

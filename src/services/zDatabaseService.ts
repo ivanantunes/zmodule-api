@@ -7,7 +7,6 @@ import { zEFieldTypeDB } from '../enums';
 
 /**
  * Service that contains the functions related to the database.
- * @namespace Services
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */

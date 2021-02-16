@@ -7,7 +7,6 @@ dotenv.config({
 
 /**
  * Contains system module settings.
- * @namespace Configs
  * @constant zConfigModule
  * @author Lucas Zaia <lucas.zaia30@gmail.com>
  * @copyright Ivan Antunes 2021
