@@ -6,3 +6,4 @@
 
 export * from './zIConfigs';
 export * from './zIDatabase';
+export * from './zITranslate';

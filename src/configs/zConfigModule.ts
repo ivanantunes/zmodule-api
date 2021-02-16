@@ -12,5 +12,6 @@ dotenv.config({
  * @copyright Ivan Antunes 2021
  */
 export const zConfigModule: zIConfigModule = {
-    MOD_LANG: String(process.env.MOD_LANG || 'pt')
+    MOD_LANG: String(process.env.MOD_LANG || 'pt'),
+    MOD_LANG_PATH: String(process.env.MOD_LANG_PATH)
 };
