@@ -2,8 +2,8 @@ import { zITranslateData } from '../interfaces';
 
 /**
  * Contains Database Translate Data.
- * @constant zITranslateData
- * @author Lucas Zaia <lucas.zaia30@gmail.com>
+ * @constant zLgnDatabase
+ * @author Ivan Antunes<ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
 export const zLgnDatabase: zITranslateData = {
