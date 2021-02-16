@@ -109,5 +109,3 @@ dist
 /lib
 
 package-lock.json
-
-/src/locale/translate.ts

@@ -10,9 +10,9 @@
     "dist:patch": "npm version patch && npm publish",
     "dist:minor": "npm version minor && npm publish",
     "dist:major": "npm version major && npm publish",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/test/index.ts",
     "watch": "nodemon -e ts -w ./src -x npm run watch:serve",
-    "watch:serve": "ts-node src/index.ts"
+    "watch:serve": "ts-node src/test/index.ts"
   },
   "repository": {
     "type": "git",
