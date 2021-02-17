@@ -13,5 +13,6 @@ export enum zEFieldTypeDB {
     DATE,
     ENUM,
     TEXT,
-    TIME
+    TIME,
+    BLOB
 }

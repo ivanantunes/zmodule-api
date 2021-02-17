@@ -5,4 +5,5 @@
  */
 
 export * from './zDatabaseService';
-
+export * from './zTranslateService';
+export * from './zCrudService';
