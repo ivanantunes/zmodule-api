@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/zCrudService.ts</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/zCrudService.ts</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { switchMap, toArray } from 'rxjs/operators';
+import { concat, from, Observable, of, throwError } from 'rxjs';
+import { zDatabaseService } from './zDatabaseService';
+import { zTranslateService } from './zTranslateService';
+
+/**
+ * Service that contains the functions related to the crud (create, read, update, delete).
+ * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export class zCrudService {
+
+  /**
+   * Stores zCrudService Service Instance.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private static instance: zCrudService | null;
+
+  /**
+   * Stores instance zTranslateService.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private tService = zTranslateService.getInstance();
+
+  /**
+   * Stores instance zDatabaseService.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private dbService = zDatabaseService.getInstance();
+
+  /**
+   *
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private constructor() { }
+
+  /**
+   * Function used to get instance of zCrudService
+   * @returns zCrudService
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public static getInstance(): zCrudService {
+
+    if (!zCrudService.instance) {
+      zCrudService.instance = new zCrudService();
+    }
+
+    return zCrudService.instance;
+
+  }
+
+  /**
+   * Function used to destroy instance of zCrudService.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public static destroyInstance(): void {
+
+    zCrudService.instance = null;
+
+  }
+
+  /**
+   * Function used to insert no values in a given table.
+   * @param {any | any[]} obj - Values to Insert.
+   * @param {string} tableName - Table Name contains in database.
+   * @returns Observable&lt;any[]> | contains the values entered with the id
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public create(obj: any | any[], tableName: string): Observable&lt;any[]> {
+
+    return this.dbService.getConnection().pipe(
+      switchMap((con) => {
+
+        if (Array.isArray(obj)) {
+          return concat(...obj.map((o) => from(con.models[tableName].create(o, {isNewRecord: true})))).pipe(
+            toArray()
+          ).pipe(
+            switchMap((rows) => {
+              const arrRows = rows.map((row) => row.get());
+
+              return of(arrRows);
+
+            })
+          );
+        } else {
+          return from(con.models[tableName].create(obj, {isNewRecord: true})).pipe(
+            switchMap((row) => of([row.get()]))
+          );
+        }
+
+      })
+    );
+
+  }
+
+  public update(): Observable&lt;any> {
+    return throwError('Method is not Implemented.');
+  }
+
+  public delete(): Observable&lt;any> {
+    return throwError('Method is not Implemented.');
+  }
+
+  public find(): Observable&lt;any> {
+    return throwError('Method is not Implemented.');
+  }
+
+  public findByIndex(): Observable&lt;any> {
+    return throwError('Method is not Implemented.');
+  }
+
+  public findAll(): Observable&lt;any> {
+    return throwError('Method is not Implemented.');
+  }
+
+  public findAndCountAll(): Observable&lt;any> {
+    return throwError('Method is not Implemented.');
+  }
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="zCrudService.html">zCrudService</a></li><li><a href="zDatabaseService.html">zDatabaseService</a></li><li><a href="zTranslateService.html">zTranslateService</a></li></ul><h3>Interfaces</h3><ul><li><a href="zIAttributeDB.html">zIAttributeDB</a></li><li><a href="zIAttributeObjectDB.html">zIAttributeObjectDB</a></li><li><a href="zIConfigDB.html">zIConfigDB</a></li><li><a href="zIConfigModule.html">zIConfigModule</a></li><li><a href="zIFieldDB.html">zIFieldDB</a></li><li><a href="zIRelationDB.html">zIRelationDB</a></li><li><a href="zITableDB.html">zITableDB</a></li><li><a href="zITranslateData.html">zITranslateData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#zConfigDB">zConfigDB</a></li><li><a href="global.html#zConfigModule">zConfigModule</a></li><li><a href="global.html#zEFieldTypeDB">zEFieldTypeDB</a></li><li><a href="global.html#zLgnDatabase">zLgnDatabase</a></li><li><a href="global.html#zLgnGeneric">zLgnGeneric</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Feb 16 2021 23:15:34 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
