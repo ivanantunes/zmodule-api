@@ -1,4 +1,6 @@
-import { Observable, of, throwError } from 'rxjs';
+import { switchMap, toArray } from 'rxjs/operators';
+import { concat, from, Observable, of, throwError } from 'rxjs';
+import { zDatabaseService } from './zDatabaseService';
 import { zTranslateService } from './zTranslateService';
 
 /**
@@ -21,6 +23,13 @@ export class zCrudService {
    * @copyright Ivan Antunes 2021
    */
   private tService = zTranslateService.getInstance();
+
+  /**
+   * Stores instance zDatabaseService.
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private dbService = zDatabaseService.getInstance();
 
   /**
    *
@@ -56,8 +65,39 @@ export class zCrudService {
 
   }
 
-  public create(): Observable<any> {
-    return throwError('Method is not Implemented.');
+  /**
+   * Function used to insert no values in a given table.
+   * @param {any | any[]} obj - Values to Insert.
+   * @param {string} tableName - Table Name contains in database.
+   * @returns Observable<any[]> | contains the values entered with the id
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public create(obj: any | any[], tableName: string): Observable<any[]> {
+
+    return this.dbService.getConnection().pipe(
+      switchMap((con) => {
+
+        if (Array.isArray(obj)) {
+          return concat(...obj.map((o) => from(con.models[tableName].create(o, {isNewRecord: true})))).pipe(
+            toArray()
+          ).pipe(
+            switchMap((rows) => {
+              const arrRows = rows.map((row) => row.get());
+
+              return of(arrRows);
+
+            })
+          );
+        } else {
+          return from(con.models[tableName].create(obj, {isNewRecord: true})).pipe(
+            switchMap((row) => of([row.get()]))
+          );
+        }
+
+      })
+    );
+
   }
 
   public update(): Observable<any> {
