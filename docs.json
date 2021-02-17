@@ -28,7 +28,8 @@
 
             "src/services/index.ts",
             "src/services/zDatabaseService.ts",
-            "src/services/zTranslateService.ts"
+            "src/services/zTranslateService.ts",
+            "src/services/zCrudService.ts"
         ],
         "includePattern": "\\.(jsx|js|ts|tsx)$"
     }
