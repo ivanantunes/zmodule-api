@@ -1,50 +1,28 @@
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { zCrudService, zDatabaseService } from '../services';
-import { zTableTest } from './data';
+import { zTableTest, zTableTestRelation } from './data';
 import faker from 'faker';
 
 zDatabaseService.getInstance().createTable(zTableTest).pipe(
-    switchMap(() => {
-        const obj = {
-            zTest_NAME: faker.name.firstName(),
-            zTest_LAST_NAME: faker.name.lastName(),
-            zTest_EMAIL: faker.internet.email(),
-            zTest_OBS: null
-        };
-        return zCrudService.getInstance().create(obj, 'zTableTest');
-    }),
-    map((insert) => {
+    switchMap(() => zDatabaseService.getInstance().createTable(zTableTestRelation)),
+    // ! Insert - 10k rows to Dabatase
+    // switchMap(() => {
+    //     const obj: any[] = [];
 
-        console.log('Valor-1', insert);
+    //     for (let i = 0; i < 10000; i++) {
+    //         obj.push({
+    //             zTest_NAME: faker.name.firstName(),
+    //             zTest_LAST_NAME: faker.name.lastName(),
+    //             zTest_EMAIL: faker.internet.email(),
+    //             zTest_OBS: null,
+    //             zTest_Rel_ID: i
+    //         });
+    //     }
 
-    }),
-    switchMap(() => {
-        const obj = [
-            {
-                zTest_NAME: faker.name.firstName(),
-                zTest_LAST_NAME: faker.name.lastName(),
-                zTest_EMAIL: faker.internet.email(),
-                zTest_OBS: null
-            },
-            {
-                zTest_NAME: faker.name.firstName(),
-                zTest_LAST_NAME: faker.name.lastName(),
-                zTest_EMAIL: faker.internet.email(),
-                zTest_OBS: null
-            },
-            {
-                zTest_NAME: faker.name.firstName(),
-                zTest_LAST_NAME: faker.name.lastName(),
-                zTest_EMAIL: faker.internet.email(),
-                zTest_OBS: null
-            }
-        ];
-
-        return zCrudService.getInstance().create(obj, 'zTableTest');
-    }),
-    map((rows) => {
-        console.log('Valor-2', rows);
-    })
-).subscribe(() => {}, (err) => {
+    //     return zCrudService.getInstance().create(obj, 'zTableTestRelation');
+    // }),
+).subscribe((response) => {
+    console.log(response);
+}, (err) => {
     console.log(err);
 });

@@ -7,6 +7,7 @@ import { zEFieldTypeDB } from '../enums';
  * @property {string} tablename - Table Name.
  * @property {zIFieldDB} tableFields - Fields contains in table.
  * @property {QueryInterfaceCreateTableOptions} tableOptions - Options cantains in table?
+ * @property {boolean} tableLogicalDelete - Use logical delete on the table?
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
@@ -14,6 +15,7 @@ export interface zITableDB {
     tableName: string;
     tableFields: zIFieldDB[];
     tableOptions?: QueryInterfaceCreateTableOptions;
+    tableLogicalDelete?: boolean;
 }
 
 /**
@@ -102,4 +104,24 @@ export interface zIAttributeObjectDB {
         model: string;
         key: string;
     };
+}
+
+/**
+ * Filter Data to Database.
+ * @interface zIFilterDataDB
+ * @property {zITableDB} table - Table Object.
+ * @property {number} pageSize - Quantity of item per page.
+ * @property {number} page - Current page.
+ * @property {'ASC' | 'DESC'} sort - Data sorting.
+ * @property {string} columnOrder - Column to be sorted.
+ * @author Ivan Antunes <ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export interface zIFilterDataDB {
+    table: zITableDB;
+    pageSize: number;
+    page: number;
+    search: string;
+    sort: 'ASC' | 'DESC';
+    columnSort: string;
 }
