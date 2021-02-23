@@ -24,10 +24,12 @@ export interface zIConfigDB {
  * @interface zIConfigModule
  * @property {string} MOD_LANG - Language system
  * @property {string} MOD_LANG_PATH - Language directory system
+ * @property {number} MOD_SERVER_PORT - Port Server system
  * @author Lucas Zaia <lucas.zaia30@gmail.com>
  * @copyright Ivan Antunes 2021
  */
 export interface zIConfigModule {
     MOD_LANG: string;
     MOD_LANG_PATH: string;
+    MOD_SERVER_PORT: number;
 }
