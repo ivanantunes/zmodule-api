@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Interface: zIConfigDB</title>
+    <title>JSDoc: Interface: zIFilterDataDB</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Interface: zIConfigDB</h1>
+    <h1 class="page-title">Interface: zIFilterDataDB</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>zIConfigDB</h2>
+        <h2>zIFilterDataDB</h2>
         
     
 </header>
@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Database Configuration Interface.</div>
+            <div class="description">Filter Data to Database.</div>
         
 
         
@@ -69,13 +69,13 @@
 
         <tr>
             
-                <td class="name"><code>DB_DIALECT</code></td>
+                <td class="name"><code>table</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="zITableDB.html">zITableDB</a></span>
 
 
             
@@ -85,60 +85,14 @@
 
             
 
-            <td class="description last">Database Type</td>
+            <td class="description last">Table Object.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>DB_HOST</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Database Host</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>DB_NAME</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Database Name</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>DB_PORT</code></td>
+                <td class="name"><code>pageSize</code></td>
             
 
             <td class="type">
@@ -154,14 +108,63 @@
 
             
 
-            <td class="description last">Database Port</td>
+            <td class="description last">Quantity of item per page.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>DB_USER</code></td>
+                <td class="name"><code>page</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Current page.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">'ASC'</span>
+|
+
+<span class="param-type">'DESC'</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Data sorting.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>columnOrder</code></td>
             
 
             <td class="type">
@@ -177,30 +180,7 @@
 
             
 
-            <td class="description last">Database User</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>DB_PASSWORD</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Database Password</td>
+            <td class="description last">Column to be sorted.</td>
         </tr>
 
     
@@ -249,7 +229,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interfaces_zIConfigs.ts.html">interfaces/zIConfigs.ts</a>, <a href="interfaces_zIConfigs.ts.html#line3">line 3</a>
+        <a href="interfaces_zIDatabase.ts.html">interfaces/zIDatabase.ts</a>, <a href="interfaces_zIDatabase.ts.html#line68">line 68</a>
     </li></ul></dd>
     
 

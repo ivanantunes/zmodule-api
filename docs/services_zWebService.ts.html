@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/zWebService.ts</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/zWebService.ts</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { zConfigModule } from '../configs';
+import { Observable, of, throwError } from 'rxjs';
+import { zTranslateService } from './zTranslateService';
+import { Express } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import express from 'express';
+import { catchError, delay, retryWhen, tap } from 'rxjs/operators';
+
+/**
+ * Service that contains the functions related to the web service.
+ * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export class zWebService {
+
+  /**
+   * Stores zWebService Service Instance.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private static instance: zWebService | null;
+
+
+  /**
+   * Stores instance zTranslateService.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private tService = zTranslateService.getInstance();
+
+  /**
+   * Express instance containing the server.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private server: Express | null = null;
+
+  /**
+   * Stores if initialized service.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private isInitialized = false;
+
+  /**
+   * Start Server in Service
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private constructor() {
+    const app = express();
+
+    this.setConfigServer(app).subscribe((currentApp) => {
+
+      this.server = currentApp;
+
+      this.server.listen(zConfigModule.MOD_SERVER_PORT, () => {
+        console.log(`${this.tService.t('web_server_start')} ${zConfigModule.MOD_SERVER_PORT}`);
+        this.isInitialized = true;
+      });
+
+    }, (err) => {
+      throw new Error(`${this.tService.t('web_server_failed')} ${err}`);
+    });
+
+  }
+
+  /**
+   * Function used to get instance of zWebService
+   * @returns zWebService
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public static getInstance(): zWebService {
+
+    if (!zWebService.instance) {
+      zWebService.instance = new zWebService();
+    }
+
+    return zWebService.instance;
+
+  }
+
+  /**
+   * Function used to destroy instance of zWebService.
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public static destroyInstance(): void {
+
+    zWebService.instance = null;
+
+  }
+
+  /**
+   * Configure server settings
+   * @param {Express} server - Server instance
+   * @returns Observable&lt;Express>
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private setConfigServer(server: Express): Observable&lt;Express> {
+    server.use(cors({maxAge: 86000}));
+
+    server.use(helmet());
+
+    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({
+      extended: true
+    }));
+
+    return of(server);
+  }
+
+  /**
+   * Start the server
+   * @returns Observable&lt;Express>
+   * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public startWebService(): Observable&lt;Express> {
+
+    return (new Observable&lt;Express>((obs) => {
+
+      if (this.isInitialized) {
+        obs.next(this.server as Express);
+        return obs.complete();
+      } else {
+        return obs.error(this.tService.t('web_server_not_initialized'));
+      }
+
+    })).pipe(
+      catchError((err) => {
+        console.log(err);
+        return throwError(err);
+      }),
+      retryWhen((err) => err.pipe(
+        tap(() => console.log(this.tService.t('web_server_try_again'))),
+        delay(5000)
+      ))
+    );
+  }
+
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="zClientService.html">zClientService</a></li><li><a href="zCrudService.html">zCrudService</a></li><li><a href="zDatabaseService.html">zDatabaseService</a></li><li><a href="zTranslateService.html">zTranslateService</a></li><li><a href="zWebService.html">zWebService</a></li></ul><h3>Interfaces</h3><ul><li><a href="zIAttributeDB.html">zIAttributeDB</a></li><li><a href="zIAttributeObjectDB.html">zIAttributeObjectDB</a></li><li><a href="zIConfigDB.html">zIConfigDB</a></li><li><a href="zIConfigModule.html">zIConfigModule</a></li><li><a href="zIFieldDB.html">zIFieldDB</a></li><li><a href="zIFilterDataDB.html">zIFilterDataDB</a></li><li><a href="zIRelationDB.html">zIRelationDB</a></li><li><a href="zITableDB.html">zITableDB</a></li><li><a href="zITranslateData.html">zITranslateData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#zConfigDB">zConfigDB</a></li><li><a href="global.html#zConfigModule">zConfigModule</a></li><li><a href="global.html#zEFieldTypeDB">zEFieldTypeDB</a></li><li><a href="global.html#zLgnDatabase">zLgnDatabase</a></li><li><a href="global.html#zLgnGeneric">zLgnGeneric</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Feb 23 2021 22:34:00 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

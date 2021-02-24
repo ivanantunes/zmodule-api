@@ -25,11 +25,14 @@
             "src/locale/index.ts",
             "src/locale/zLgnGeneric.ts",
             "src/locale/zLgnDatabase.ts",
+            "src/locale/zLgnWeb.ts",
 
             "src/services/index.ts",
             "src/services/zDatabaseService.ts",
             "src/services/zTranslateService.ts",
-            "src/services/zCrudService.ts"
+            "src/services/zCrudService.ts",
+            "src/services/zClientService.ts",
+            "src/services/zWebService.ts"
         ],
         "includePattern": "\\.(jsx|js|ts|tsx)$"
     }
