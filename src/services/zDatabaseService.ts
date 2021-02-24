@@ -439,6 +439,17 @@ export class zDatabaseService {
 
         switchMap((isTable) => {
 
+          if (table.tableLogicalDelete) {
+            table.tableFields.push({
+              fieldName: 'IS_DELETED',
+              fieldPrimaryKey: false,
+              fieldRequired: true,
+              fieldType: zEFieldTypeDB.BOOLEAN,
+              fieldDefaultValue: '0',
+            });
+          }
+
+
           console.log(`${this.tService.t('gnc_lbl_table')} ${table.tableName} ${this.tService.t('gnc_lbl_exists')}: ${isTable}`);
 
           if (isTable) {

@@ -14,4 +14,88 @@ A library created with the concept of facilitating the creation of api.
 <a href="https://nodei.co/npm/zmodule-api/"><img src="https://nodei.co/npm/zmodule-api.png?downloads=true&downloadRank=true&stars=true"></a>
 </p>
 
-[Lib Docs](https://ivanantunes.github.io/zmodule-api)
+[Develop Doc's](https://ivanantunes.github.io/zmodule-api)
+
+
+# Base Structure
+    .
+    ├── FolderMyProject
+    |   ├── src
+    |   |   ├── locale
+    |   |   |   ├── translate.ts
+    |   |   └── 
+    |   |   ├── index.ts
+    |   |   ├── .env
+    |   └── 
+    └──
+
+# QuickStart
+
+```typescript
+
+import { zEFieldTypeDB, zITableDB, zCrudService, zDatabaseService } from 'zmodule-api';
+import { switchMap } from 'rxjs/operators';
+
+const zTableTest: zITableDB = {
+    tableName: 'zTableTest',
+    tableFields: [
+        {
+            fieldName: 'zTest_ID',
+            fieldPrimaryKey: true,
+            fieldRequired: true,
+            fieldType: zEFieldTypeDB.BIGINT,
+            fieldAutoIncrement: true
+        },
+        {
+            fieldName: 'zTest_NAME',
+            fieldPrimaryKey: false,
+            fieldRequired: true,
+            fieldType: zEFieldTypeDB.VARCHAR,
+            fieldSize: 100
+        },
+        {
+            fieldName: 'zTest_LAST_NAME',
+            fieldPrimaryKey: false,
+            fieldRequired: true,
+            fieldType: zEFieldTypeDB.VARCHAR,
+            fieldSize: 100
+        },
+        {
+            fieldName: 'zTest_EMAIL',
+            fieldPrimaryKey: false,
+            fieldRequired: true,
+            fieldType: zEFieldTypeDB.VARCHAR,
+            fieldSize: 100,
+            fieldValidate: {
+                isEmail: true
+            }
+        },
+        {
+            fieldName: 'zTest_OBS',
+            fieldPrimaryKey: false,
+            fieldRequired: false,
+            fieldAllowNull: true,
+            fieldType: zEFieldTypeDB.TEXT,
+            fieldTextLength: 'medium',
+        },
+    ]
+};
+
+zDatabaseService.getInstance().createTable(zTableTest).pipe(
+    switchMap(() => {
+        const obj = {
+                zTest_NAME: 'Name',
+                zTest_LAST_NAME: 'Lastname',
+                zTest_EMAIL: 'zmodule_api@email.com',
+                zTest_OBS: 'My Obs...',
+            };
+
+        return zCrudService.getInstance().create(obj, 'zTableTest');
+    }),
+).subscribe((response) => {
+    console.log(response);
+}, (err) => {
+    console.log(err);
+});
+
+```

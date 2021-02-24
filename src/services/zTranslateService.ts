@@ -3,7 +3,8 @@ import i18next, { TFunction } from 'i18next';
 import { zConfigModule } from './../configs';
 import {
   zLgnGeneric,
-  zLgnDatabase
+  zLgnDatabase,
+  zLgnWeb
 } from '../locale';
 
 /**
@@ -35,14 +36,16 @@ export class zTranslateService {
       translation: {
         ...data.pt,
         ...zLgnGeneric.pt,
-        ...zLgnDatabase.pt
+        ...zLgnDatabase.pt,
+        ...zLgnWeb.pt
       }
     };
     const en = {
       translation: {
         ...data.en,
         ...zLgnGeneric.en,
-        ...zLgnDatabase.en
+        ...zLgnDatabase.en,
+        ...zLgnWeb.en
       }
     };
 
