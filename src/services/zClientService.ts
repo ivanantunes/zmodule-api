@@ -76,7 +76,7 @@ export class zClientService {
    * @copyright Ivan Antunes 2021
    */
   public request(url: string, type: 'GET' | 'POST', obj?: any, customHeader?: any): Observable<{ text: string, body: any }> {
-    // TODO: add translate
+
     return new Observable<{ text: string, body: any }>((obs) => {
       let request: http.SuperAgentRequest;
 
@@ -88,7 +88,7 @@ export class zClientService {
           request = http.post(url).send(obj);
           break;
         default:
-          return obs.error('Tipo Desconhecido.');
+          return obs.error(this.tService.t('gnc_lbl_type_not_found'));
       }
 
       if (customHeader) {
@@ -107,7 +107,7 @@ export class zClientService {
 
         if (!this.statusCodeSuccess.find((status) => status === res.status)) {
           return obs.error({
-            text: `Falha ao Pegar Dados, Status Inválido: ${res.status}`,
+            text: `${this.tService.t('gnc_internal_server_error')} ${this.tService.t('gnc_lbl_status_invalid')} ${res.status}`,
             body: res.body
           });
         }

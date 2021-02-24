@@ -4,5 +4,6 @@
  * @copyright Ivan Antunes 2021
  */
 
- export * from './zLgnGeneric';
- export * from './zLgnDatabase';
+export * from './zLgnGeneric';
+export * from './zLgnDatabase';
+export * from './zLgnWeb';

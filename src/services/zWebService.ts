@@ -50,7 +50,6 @@ export class zWebService {
    * @copyright Ivan Antunes 2021
    */
   private constructor() {
-
     const app = express();
 
     this.setConfigServer(app).subscribe((currentApp) => {
@@ -58,12 +57,12 @@ export class zWebService {
       this.server = currentApp;
 
       this.server.listen(zConfigModule.MOD_SERVER_PORT, () => {
-        console.log('Servidor Rodando na Porta: ' + zConfigModule.MOD_SERVER_PORT);
+        console.log(`${this.tService.t('web_server_start')} ${zConfigModule.MOD_SERVER_PORT}`);
         this.isInitialized = true;
       });
 
     }, (err) => {
-      throw new Error('Falha ao Iniciar Servidor: ' + err);
+      throw new Error(`${this.tService.t('web_server_failed')} ${err}`);
     });
 
   }
@@ -95,30 +94,41 @@ export class zWebService {
 
   }
 
-  // TODO: Colocar Docs
+  /**
+   * Configure server settings
+   * @param {Express} server - Server instance
+   * @returns Observable<Express>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private setConfigServer(server: Express): Observable<Express> {
+    server.use(cors({maxAge: 86000}));
 
-  private setConfigServer(app: Express): Observable<Express> {
-    app.use(cors({maxAge: 86000}));
+    server.use(helmet());
 
-    app.use(helmet());
-
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({
+    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({
       extended: true
     }));
 
-    return of(app);
+    return of(server);
   }
 
+  /**
+   * Start the server
+   * @returns Observable<Express>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
   public startWebService(): Observable<Express> {
-    // TODO: Add Translate
+
     return (new Observable<Express>((obs) => {
 
       if (this.isInitialized) {
         obs.next(this.server as Express);
         return obs.complete();
       } else {
-        return obs.error('Servidor Ainda Não Inicializado.');
+        return obs.error(this.tService.t('web_server_not_initialized'));
       }
 
     })).pipe(
@@ -127,7 +137,7 @@ export class zWebService {
         return throwError(err);
       }),
       retryWhen((err) => err.pipe(
-        tap(() => console.log('Tentanto Iniciar O Servidor em 5 Segundos.')),
+        tap(() => console.log(this.tService.t('web_server_try_again'))),
         delay(5000)
       ))
     );
