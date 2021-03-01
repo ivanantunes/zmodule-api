@@ -7,12 +7,13 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "postversion": "git push && git push --tags",
-    "dist:patch": "npm version patch && npm publish",
-    "dist:minor": "npm version minor && npm publish",
-    "dist:major": "npm version major && npm publish",
+    "dist:patch": "npm version patch && npm run build && npm publish",
+    "dist:minor": "npm version minor && npm run build && npm publish",
+    "dist:major": "npm version major && npm run build && npm publish",
     "start": "ts-node src/test/index.ts",
     "watch": "nodemon -e ts -w ./src -x npm run watch:serve",
-    "watch:serve": "ts-node src/test/index.ts"
+    "watch:serve": "ts-node src/test/index.ts",
+    "build": "rm -rf lib/ && tsc"
   },
   "repository": {
     "type": "git",
