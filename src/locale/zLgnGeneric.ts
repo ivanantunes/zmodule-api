@@ -14,6 +14,7 @@ export const zLgnGeneric: zITranslateData = {
         gnc_lbl_field: 'Campo',
         gnc_lbl_type_not_found: 'Tipo Desconhecido.',
         gnc_lbl_status_invalid: 'Status Inválido',
+        gnc_error_send_mail: 'Falha ao Enviar E-mail:'
     },
     en: {
         gnc_internal_server_error: 'Server Internal Error:',
@@ -22,5 +23,6 @@ export const zLgnGeneric: zITranslateData = {
         gnc_lbl_field: 'Field',
         gnc_lbl_type_not_found: 'Unknown type.',
         gnc_lbl_status_invalid: 'Invalid Status',
+        gnc_error_send_mail: 'Failed to send email:'
     }
 };

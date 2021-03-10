@@ -1,5 +1,7 @@
-import { zIMailOptions } from './../interfaces';
-import { zIMailConfig } from './../interfaces';
+import { Observable } from 'rxjs';
+import { zIMail, zIMailConfig } from './../interfaces';
+import { zConfigMail } from '../configs';
+import { zTranslateService } from './zTranslateService';
 const nodemailer = require('nodemailer');
 
 /**
@@ -7,7 +9,6 @@ const nodemailer = require('nodemailer');
  * @author Gabriel Alves <gbrextreme@hotmail.com>
  * @copyright Ivan Antunes 2021
  */
-
 export class zMailService {
     /**
      * Stores zMailService Instance.
@@ -17,10 +18,17 @@ export class zMailService {
     private static instance: zMailService | null;
 
     /**
+     * Stores instance zTranslateService.
+     * @author Ivan Antunes <ivanantnes75@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    private tService = zTranslateService.getInstance();
+
+    /**
      * @author Gabriel Alves <gbrextreme@hotmail.com>
      * @copyright Ivan Antunes 2021
      */
-    private constructor() {}
+    private constructor() { }
 
     /**
      * Function used to get instance of zMailService
@@ -44,17 +52,54 @@ export class zMailService {
     }
 
     /**
-     *
+     * Function to send custom mail
+     * @author Ivam Antunes <ivanantnes75@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public sendCustomMail(mail: zIMail, config: zIMailConfig): Observable<void> {
+        return new Observable<void>((obs) => {
+            const transport = nodemailer.createTransport(config);
+
+            if (mail.html && mail.text !== '') {
+                mail.html = `${mail.text} <br><br><br> ${mail.html}`;
+            }
+
+            transport.sendMail(mail, (err: any, res: any) => {
+                if (err) {
+                    console.log(`${this.tService.t('gnc_error_send_mail')} ${err.message}`);
+                    obs.error(err.message);
+                    obs.complete();
+                } else {
+                    obs.next();
+                    obs.complete();
+                }
+            });
+        });
+    }
+
+    /**
+     * Function to send mail
      * @author Gabriel Alves <gbrextreme@hotmail.com>
      * @copyright Ivan Antunes 2021
      */
-    public sendMail(mailOptions: zIMailOptions, transport: zIMailConfig | string): void {
-        const transporter = nodemailer.createTransport(transport);
-        transporter.sendMail(mailOptions, (err: any, res: any) => {
-            if (err) {
-                return console.log('error ' + err.message);
+    public sendMail(mail: zIMail): Observable<void> {
+        return new Observable<void>((obs) => {
+            const transport = nodemailer.createTransport(zConfigMail);
+
+            if (mail.html && mail.text !== '') {
+                mail.html = `${mail.text} <br><br><br> ${mail.html}`;
             }
-            console.log('Mensage sent ' + res.response);
+
+            transport.sendMail(mail, (err: any, res: any) => {
+                if (err) {
+                    console.log(`${this.tService.t('gnc_error_send_mail')} ${err.message}`);
+                    obs.error(err.message);
+                    obs.complete();
+                } else {
+                    obs.next();
+                    obs.complete();
+                }
+            });
         });
     }
 }

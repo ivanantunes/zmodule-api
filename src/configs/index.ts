@@ -6,3 +6,4 @@
 
 export * from './zConfigDB';
 export * from './zConfigModule';
+export * from './zConfigMail';

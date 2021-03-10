@@ -1,6 +1,6 @@
 /**
  * Module Mail Config Data Interface.
- * @interface zIMailOptions
+ * @interface zIMail
  * @property {string} from - Mail sender
  * @property {string} to - Mail reciver
  * @property {string} subject - Mail subject
@@ -10,7 +10,7 @@
  * @copyright Ivan Antunes 2021
  */
 
-export interface zIMailOptions {
+export interface zIMail {
     from: string;
     to: string;
     subject: string;
@@ -25,22 +25,41 @@ export interface zIMailOptions {
  * @property {string} host - Mail host
  * @property {string} port - Mail port
  * @property {string} secure - Mail options to use authentication
- * @property {any} auth - Mail username and password
- * @property {any} tls - Mail reject unauthorized
+ * @property {zIMailLogin} auth - Mail username and password
+ * @property {zIMailTls} tls - Mail Transport Layer Security Options
  * @author Gabriel Alves <gbrextreme@hotmail.com>
  * @copyright Ivan Antunes 2021
  */
 
 export interface zIMailConfig {
     service?: string;
-    host: string;
+    host?: string;
     port?: string;
     secure?: boolean;
-    auth: {
-        user: string;
-        pass: string;
-    };
-    tls?: {
-        rejectUnauthorized: boolean;
-    };
+    auth: zIMailLogin;
+    tls?: zIMailTls;
+}
+
+/**
+ * Mail Login Options
+ * @interface zIMailLogin
+ * @property {string} user - Mail User
+ * @property {string} pass - Mail Password
+ * @author Ivan Antunes <ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export interface zIMailLogin {
+    user: string;
+    pass: string;
+}
+
+/**
+ * Transport Layer Security Options
+ * @interface zIMailTls
+ * @property {boolean} rejectUnauthorized - Unauthorized reject?
+ * @author Ivan Antunes <ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export interface zIMailTls {
+    rejectUnauthorized: boolean;
 }
