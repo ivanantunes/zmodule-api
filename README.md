@@ -31,6 +31,50 @@ A library created with the concept of facilitating the creation of api.
 
 # QuickStart
 
+```env
+# Database configuration
+
+# Supported: mysql | mariadb | postgres | mssql / Default Value: mysql 
+DB_DIALECT=
+# Default Value: localhost
+DB_HOST=
+# Default Value: zmodule_api
+DB_NAME=
+# Default Value: 3306
+DB_PORT=
+# Default Value: root
+DB_USER=
+# Default Value: 
+DB_PASSWORD=
+
+# Module Configuration
+
+# Default Value: pt 
+MOD_LANG=
+# Default Value: ../../../../src/locale/translate
+MOD_LANG_PATH=
+# Default Value: 3000
+MOD_SERVER_PORT=
+
+# Mail Configuration
+
+# Default Value:
+MAIL_HOST=
+# Default Value:
+MAIL_PORT=
+# Default Value:
+MAIL_USER=
+# Default Value:
+MAIL_PASSWORD=
+# Default Value:
+MAIL_SECURE=
+# Default Value:
+MAIL_SERVICE=
+# Default Value:
+MAIL_TLS_REJECT=
+```
+
+
 ```typescript
 
 import { zEFieldTypeDB, zITableDB, zCrudService, zDatabaseService } from 'zmodule-api';

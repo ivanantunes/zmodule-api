@@ -1,5 +1,5 @@
 import { switchMap, toArray } from 'rxjs/operators';
-import { concat, from, Observable, of, throwError } from 'rxjs';
+import { concat, from, Observable, of } from 'rxjs';
 import { zDatabaseService } from './zDatabaseService';
 import { zTranslateService } from './zTranslateService';
 import { zIFilterDataDB, zIRelationDB, zITableDB } from '../interfaces';

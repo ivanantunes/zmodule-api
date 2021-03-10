@@ -13,6 +13,6 @@ dotenv.config({
  */
 export const zConfigModule: zIConfigModule = {
     MOD_LANG: String(process.env.MOD_LANG || 'pt'),
-    MOD_LANG_PATH: String(process.env.MOD_LANG_PATH),
+    MOD_LANG_PATH: String(process.env.MOD_LANG_PATH || '../../../../src/locale/translate'),
     MOD_SERVER_PORT: Number(process.env.MOD_SERVER_PORT || 3000)
 };
