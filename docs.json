@@ -10,6 +10,7 @@
         "include": [
             "src/configs/index.ts",
             "src/configs/zConfigDB.ts",
+            "src/configs/zConfigMail.ts",
             "src/configs/zConfigModule.ts",
 
             "src/controllers/index.ts",
@@ -20,6 +21,7 @@
             "src/interfaces/index.ts",
             "src/interfaces/zIConfigs.ts",
             "src/interfaces/zIDatabase.ts",
+            "src/interfaces/zIMail.ts",
             "src/interfaces/zITranslate.ts",
 
             "src/locale/index.ts",
@@ -28,10 +30,11 @@
             "src/locale/zLgnWeb.ts",
 
             "src/services/index.ts",
-            "src/services/zDatabaseService.ts",
-            "src/services/zTranslateService.ts",
-            "src/services/zCrudService.ts",
             "src/services/zClientService.ts",
+            "src/services/zCrudService.ts",
+            "src/services/zDatabaseService.ts",
+            "src/services/zMailService.ts",
+            "src/services/zTranslateService.ts",
             "src/services/zWebService.ts"
         ],
         "includePattern": "\\.(jsx|js|ts|tsx)$"

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Interface: zIAttributeDB</title>
+    <title>JSDoc: Source: interfaces/zIMail.ts</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,161 +17,83 @@
 
 <div id="main">
 
-    <h1 class="page-title">Interface: zIAttributeDB</h1>
+    <h1 class="page-title">Source: interfaces/zIMail.ts</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2>zIAttributeDB</h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Module Mail Config Data Interface.
+ * @interface zIMail
+ * @property {string} from - Mail sender
+ * @property {string} to - Mail reciver
+ * @property {string} subject - Mail subject
+ * @property {string} text - Mail body
+ * @property {string} html - Mail body html
+ * @author Gabriel Alves &lt;gbrextreme@hotmail.com>
+ * @copyright Ivan Antunes 2021
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Database Attribute field.</div>
-        
+export interface zIMail {
+    from: string;
+    to: string;
+    subject: string;
+    text: string;
+    html?: string;
+}
 
-        
+/**
+ * Module Mail Config Transporter Interface.
+ * @interface zIMailConfig
+ * @property {string} service - Mail service
+ * @property {string} host - Mail host
+ * @property {string} port - Mail port
+ * @property {string} secure - Mail options to use authentication
+ * @property {zIMailLogin} auth - Mail username and password
+ * @property {zIMailTls} tls - Mail Transport Layer Security Options
+ * @author Gabriel Alves &lt;gbrextreme@hotmail.com>
+ * @copyright Ivan Antunes 2021
+ */
 
+export interface zIMailConfig {
+    service?: string;
+    host?: string;
+    port?: string;
+    secure?: boolean;
+    auth: zIMailLogin;
+    tls?: zIMailTls;
+}
 
-    <h5 class="subsection-title">Properties:</h5>
+/**
+ * Mail Login Options
+ * @interface zIMailLogin
+ * @property {string} user - Mail User
+ * @property {string} pass - Mail Password
+ * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export interface zIMailLogin {
+    user: string;
+    pass: string;
+}
 
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>attr</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="zIAttributeObjectDB.html">zIAttributeObjectDB</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Attribute Name</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li><a href="mailto:ivanantnes75@gmail.com">Ivan Antunes</a></li>
-        </ul>
-    </dd>
-    
-
-    
-    <dt class="tag-copyright">Copyright:</dt>
-    <dd class="tag-copyright"><ul class="dummy"><li>Ivan Antunes 2021</li></ul></dd>
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interfaces_zIDatabase.ts.html">interfaces/zIDatabase.ts</a>, <a href="interfaces_zIDatabase.ts.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+/**
+ * Transport Layer Security Options
+ * @interface zIMailTls
+ * @property {boolean} rejectUnauthorized - Unauthorized reject?
+ * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export interface zIMailTls {
+    rejectUnauthorized: boolean;
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

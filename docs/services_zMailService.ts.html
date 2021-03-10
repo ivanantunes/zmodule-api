@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/zMailService.ts</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/zMailService.ts</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Observable } from 'rxjs';
+import { zIMail, zIMailConfig } from './../interfaces';
+import { zConfigMail } from '../configs';
+import { zTranslateService } from './zTranslateService';
+const nodemailer = require('nodemailer');
+
+/**
+ * Module mailing service.
+ * @author Gabriel Alves &lt;gbrextreme@hotmail.com>
+ * @copyright Ivan Antunes 2021
+ */
+export class zMailService {
+    /**
+     * Stores zMailService Instance.
+     * @author Gabriel Alves &lt;gbrextreme@hotmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    private static instance: zMailService | null;
+
+    /**
+     * Stores instance zTranslateService.
+     * @author Ivan Antunes &lt;ivanantnes75@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    private tService = zTranslateService.getInstance();
+
+    /**
+     * @author Gabriel Alves &lt;gbrextreme@hotmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    private constructor() { }
+
+    /**
+     * Function used to get instance of zMailService
+     * @author Gabriel Alves &lt;gbrextreme@hotmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public static getInstance(): zMailService {
+        if (!zMailService.instance) {
+            zMailService.instance = new zMailService();
+        }
+        return zMailService.instance;
+    }
+
+    /**
+     * Function used to destroy instance of zMailService
+     * @author Gabriel Alves &lt;gbrextreme@hotmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public static destroyInstance(): void {
+        zMailService.instance = null;
+    }
+
+    /**
+     * Function to send custom mail
+     * @author Ivam Antunes &lt;ivanantnes75@gmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public sendCustomMail(mail: zIMail, config: zIMailConfig): Observable&lt;void> {
+        return new Observable&lt;void>((obs) => {
+            const transport = nodemailer.createTransport(config);
+
+            if (mail.html &amp;&amp; mail.text !== '') {
+                mail.html = `${mail.text} &lt;br>&lt;br>&lt;br> ${mail.html}`;
+            }
+
+            transport.sendMail(mail, (err: any, res: any) => {
+                if (err) {
+                    console.log(`${this.tService.t('gnc_error_send_mail')} ${err.message}`);
+                    obs.error(err.message);
+                    obs.complete();
+                } else {
+                    obs.next();
+                    obs.complete();
+                }
+            });
+        });
+    }
+
+    /**
+     * Function to send mail
+     * @author Gabriel Alves &lt;gbrextreme@hotmail.com>
+     * @copyright Ivan Antunes 2021
+     */
+    public sendMail(mail: zIMail): Observable&lt;void> {
+        return new Observable&lt;void>((obs) => {
+            const transport = nodemailer.createTransport(zConfigMail);
+
+            if (mail.html &amp;&amp; mail.text !== '') {
+                mail.html = `${mail.text} &lt;br>&lt;br>&lt;br> ${mail.html}`;
+            }
+
+            transport.sendMail(mail, (err: any, res: any) => {
+                if (err) {
+                    console.log(`${this.tService.t('gnc_error_send_mail')} ${err.message}`);
+                    obs.error(err.message);
+                    obs.complete();
+                } else {
+                    obs.next();
+                    obs.complete();
+                }
+            });
+        });
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="zClientService.html">zClientService</a></li><li><a href="zCrudService.html">zCrudService</a></li><li><a href="zDatabaseService.html">zDatabaseService</a></li><li><a href="zMailService.html">zMailService</a></li><li><a href="zTranslateService.html">zTranslateService</a></li><li><a href="zWebService.html">zWebService</a></li></ul><h3>Interfaces</h3><ul><li><a href="zIAttributeDB.html">zIAttributeDB</a></li><li><a href="zIAttributeObjectDB.html">zIAttributeObjectDB</a></li><li><a href="zIConfigDB.html">zIConfigDB</a></li><li><a href="zIConfigModule.html">zIConfigModule</a></li><li><a href="zIFieldDB.html">zIFieldDB</a></li><li><a href="zIFilterDataDB.html">zIFilterDataDB</a></li><li><a href="zIMail.html">zIMail</a></li><li><a href="zIMailConfig.html">zIMailConfig</a></li><li><a href="zIMailLogin.html">zIMailLogin</a></li><li><a href="zIMailTls.html">zIMailTls</a></li><li><a href="zIRelationDB.html">zIRelationDB</a></li><li><a href="zITableDB.html">zITableDB</a></li><li><a href="zITranslateData.html">zITranslateData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#zConfigDB">zConfigDB</a></li><li><a href="global.html#zConfigMail">zConfigMail</a></li><li><a href="global.html#zConfigModule">zConfigModule</a></li><li><a href="global.html#zEFieldTypeDB">zEFieldTypeDB</a></li><li><a href="global.html#zLgnDatabase">zLgnDatabase</a></li><li><a href="global.html#zLgnGeneric">zLgnGeneric</a></li><li><a href="global.html#zLgnWeb">zLgnWeb</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Mar 10 2021 20:10:33 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
