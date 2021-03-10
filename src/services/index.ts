@@ -9,3 +9,4 @@ export * from './zTranslateService';
 export * from './zCrudService';
 export * from './zWebService';
 export * from './zClientService';
+export * from './zMailService';
