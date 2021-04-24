@@ -48,6 +48,7 @@
     "pg-hstore": "^2.3.3",
     "rxjs": "^6.6.3",
     "sequelize": "^6.5.0",
+    "socket.io": "^4.0.1",
     "superagent": "^6.1.0",
     "tedious": "^11.0.3",
     "tslib": "^2.1.0"

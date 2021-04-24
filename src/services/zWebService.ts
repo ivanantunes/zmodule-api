@@ -7,6 +7,8 @@ import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import express from 'express';
 import { catchError, delay, retryWhen, tap } from 'rxjs/operators';
+import http from 'http';
+import { Server } from 'socket.io';
 
 /**
  * Service that contains the functions related to the web service.
@@ -38,6 +40,13 @@ export class zWebService {
   private server: Express | null = null;
 
   /**
+   * Socket instance containing the server.
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  private socket: Server | null = null;
+
+  /**
    * Stores if initialized service.
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
@@ -54,9 +63,12 @@ export class zWebService {
 
     this.setConfigServer(app).subscribe((currentApp) => {
 
+      const serverHttp = http.createServer(currentApp);
+      this.socket = new Server(serverHttp);
+
       this.server = currentApp;
 
-      this.server.listen(zConfigModule.MOD_SERVER_PORT, () => {
+      serverHttp.listen(zConfigModule.MOD_SERVER_PORT, () => {
         console.log(`${this.tService.t('web_server_start')} ${zConfigModule.MOD_SERVER_PORT}`);
         this.isInitialized = true;
       });
@@ -143,5 +155,28 @@ export class zWebService {
     );
   }
 
+  public socketInstance(): Observable<Server> {
+
+    return (new Observable<Server>((obs) => {
+
+      if (this.isInitialized) {
+        obs.next(this.socket as Server);
+        return obs.complete();
+      } else {
+        return obs.error(this.tService.t('web_socket_not_initialized'));
+      }
+
+    })).pipe(
+      catchError((err) => {
+        console.log(err);
+        return throwError(err);
+      }),
+      retryWhen((err) => err.pipe(
+        tap(() => console.log(this.tService.t('web_server_try_again'))),
+        delay(5000)
+      ))
+    );
+
+  }
 
 }
