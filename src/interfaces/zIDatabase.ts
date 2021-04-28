@@ -35,6 +35,8 @@ export interface zITableDB {
  * @property {number} fieldPrecision - Field Precision?
  * @property {'tiny' | 'medium' | 'long'} fieldTextLength - Field Text Length?
  * @property {ModelValidateOptions} fieldValidate - Field Validate?
+ * @property {boolean} fieldHash - Field is Hash?
+ * @property {boolean} fieldEncrypted - Field is Encrypted?
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
@@ -53,6 +55,8 @@ export interface zIFieldDB {
     fieldPrecision?: number;
     fieldTextLength?: 'tiny' | 'medium' | 'long';
     fieldValidate?: ModelValidateOptions;
+    fieldHash?: boolean;
+    fieldEncrypted?: boolean;
 }
 
 /**
