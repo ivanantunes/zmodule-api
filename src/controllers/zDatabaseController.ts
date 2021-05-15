@@ -62,7 +62,7 @@ export class zDatabaseController {
      * @copyright Ivan Antunes 2021
      */
     public createTables(tables: zITableDB[]): Observable<unknown> {
-        return concat(tables.map((table) => this.dbService.createTable(table))).pipe(toArray());
+        return concat(...tables.map((table) => this.dbService.createTable(table))).pipe(toArray());
     }
 
 }
