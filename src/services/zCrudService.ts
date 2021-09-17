@@ -3,7 +3,7 @@ import { concat, from, Observable, of } from 'rxjs';
 import { zDatabaseService } from './zDatabaseService';
 import { zTranslateService } from './zTranslateService';
 import { zIFilterDataDB, zIRelationDB, zITableDB } from '../interfaces';
-import { Model, ModelCtor } from 'sequelize/types';
+import { Model, ModelCtor, Transaction } from 'sequelize/types';
 import { Op } from 'sequelize';
 
 /**
@@ -100,7 +100,7 @@ export class zCrudService {
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
-  public create(obj: any | any[], tableName: string): Observable<any[]> {
+  public create(obj: any | any[], tableName: string, transaction?: Transaction): Observable<any[]> {
 
     return this.dbService.getConnection().pipe(
       switchMap((con) => {
@@ -117,7 +117,7 @@ export class zCrudService {
             })
           );
         } else {
-          return from(con.models[tableName].create(obj, { isNewRecord: true })).pipe(
+          return from(con.models[tableName].create(obj, { isNewRecord: true, transaction })).pipe(
             switchMap((row) => of([row.get()]))
           );
         }
@@ -137,11 +137,11 @@ export class zCrudService {
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
-  public update(obj: any, id: number, fieldName: string, tableName: string): Observable<number> {
+  public update(obj: any, id: number, fieldName: string, tableName: string, transaction?: Transaction): Observable<number> {
 
     return this.dbService.getConnection().pipe(
 
-      switchMap((con) => from(con.models[tableName].update(obj, { where: { [fieldName]: id } })).pipe(
+      switchMap((con) => from(con.models[tableName].update(obj, { where: { [fieldName]: id }, transaction })).pipe(
         switchMap((rows) => of(rows[0]))
       ))
 
@@ -159,7 +159,7 @@ export class zCrudService {
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
    */
-  public delete(id: number, fieldName: string, tableName: string, isLogical?: boolean): Observable<number> {
+  public delete(id: number, fieldName: string, tableName: string, isLogical?: boolean, transaction?: Transaction): Observable<number> {
 
     return this.dbService.getConnection().pipe(
 
@@ -167,11 +167,11 @@ export class zCrudService {
 
         if (isLogical) {
 
-          return this.update({ IS_DELETED: true }, id, fieldName, tableName);
+          return this.update({ IS_DELETED: true }, id, fieldName, tableName, transaction);
 
         } else {
 
-          return from(con.models[tableName].destroy({ where: { [fieldName]: id } }));
+          return from(con.models[tableName].destroy({ where: { [fieldName]: id }, transaction }));
 
         }
 

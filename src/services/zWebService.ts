@@ -118,9 +118,10 @@ export class zWebService {
 
     server.use(helmet());
 
-    server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded({
-      extended: true
+    server.use(express.json({limit: '100mb'}));
+    server.use(express.urlencoded({
+      extended: true,
+      limit: '100mb'
     }));
 
     return of(server);
