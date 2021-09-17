@@ -1,3 +1,5 @@
+import { Attachment } from 'nodemailer/lib/mailer';
+
 /**
  * Module Mail Config Data Interface.
  * @interface zIMail
@@ -9,13 +11,13 @@
  * @author Gabriel Alves <gbrextreme@hotmail.com>
  * @copyright Ivan Antunes 2021
  */
-
 export interface zIMail {
     from: string;
     to: string;
     subject: string;
     text: string;
     html?: string;
+    attachments?: Attachment[];
 }
 
 /**
@@ -34,7 +36,7 @@ export interface zIMail {
 export interface zIMailConfig {
     service?: string;
     host?: string;
-    port?: string;
+    port?: number;
     secure?: boolean;
     auth: zIMailLogin;
     tls?: zIMailTls;

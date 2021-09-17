@@ -13,7 +13,7 @@ dotenv.config({
  */
 export const zConfigMail: zIMailConfig = {
     host: String(process.env.MAIL_HOST),
-    port: String(process.env.MAIL_PORT),
+    port: Number(process.env.MAIL_PORT),
     auth: {
         user: String(process.env.MAIL_USER),
         pass: String(process.env.MAIL_PASSWORD)
