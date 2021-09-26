@@ -125,6 +125,7 @@ export class zDatabaseService {
           dialect: currentDialect,
           password: config.DB_PASSWORD,
           port: config.DB_PORT,
+          logging: config.DB_LOG
         })).pipe(
           switchMap((con) => from(con.authenticate()).pipe(
             switchMap(() => of(con))

@@ -17,5 +17,6 @@ export const zConfigDB: zIConfigDB = {
     DB_NAME: String(process.env.DB_NAME || 'zmodule_api'),
     DB_PORT: Number(process.env.DB_PORT || 3306),
     DB_USER: String(process.env.DB_USER || 'root'),
-    DB_PASSWORD: String(process.env.DB_PASSWORD || '')
+    DB_PASSWORD: String(process.env.DB_PASSWORD || ''),
+    DB_LOG: Boolean(process.env.DB_LOG === 'true' ? true : false)
 };

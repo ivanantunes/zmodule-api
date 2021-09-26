@@ -7,6 +7,7 @@
  * @property {number} DB_PORT - Database Port
  * @property {string} DB_USER - Database User
  * @property {string} DB_PASSWORD - Database Password
+ * @property {string} DB_LOG - Database Log
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
@@ -17,6 +18,7 @@ export interface zIConfigDB {
     DB_PORT: number;
     DB_USER: string;
     DB_PASSWORD: string;
+    DB_LOG: boolean;
 }
 
 /**
