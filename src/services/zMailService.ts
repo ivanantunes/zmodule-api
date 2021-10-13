@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs';
-import { zIMail, zIMailConfig } from './../interfaces';
+import { zIMailConfig } from './../interfaces';
 import { zConfigMail } from '../configs';
 import { zTranslateService } from './zTranslateService';
 import nodemailer from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
 
 /**
  * Module mailing service.
@@ -56,7 +57,7 @@ export class zMailService {
      * @author Ivam Antunes <ivanantnes75@gmail.com>
      * @copyright Ivan Antunes 2021
      */
-    public sendCustomMail(mail: zIMail, config: zIMailConfig): Observable<void> {
+    public sendCustomMail(mail: Mail.Options, config: zIMailConfig): Observable<void> {
         return new Observable<void>((obs) => {
             const transport = nodemailer.createTransport({...config});
 
@@ -82,7 +83,7 @@ export class zMailService {
      * @author Gabriel Alves <gbrextreme@hotmail.com>
      * @copyright Ivan Antunes 2021
      */
-    public sendMail(mail: zIMail): Observable<void> {
+    public sendMail(mail: Mail.Options): Observable<void> {
         return new Observable<void>((obs) => {
             const transport = nodemailer.createTransport(zConfigMail);
 
