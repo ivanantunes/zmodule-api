@@ -51,7 +51,8 @@ export const zTableTestRelation: zITableDB = {
             fieldAutoIncrement: false,
             fieldRelation: {
                 tableName: 'zTableTest',
-                fieldName: 'zTest_ID'
+                fieldName: 'zTest_ID',
+                fieldKeyLabel: 'zTest_NAME'
             },
         },
     ],
