@@ -75,7 +75,7 @@ export interface zIFieldDB {
 export interface zIRelationDB {
     tableName: string;
     fieldName: string;
-    fieldKeyLabel: string;
+    fieldKeyLabel?: string;
 }
 
 /**
