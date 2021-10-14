@@ -1,25 +1,3 @@
-import { Attachment } from 'nodemailer/lib/mailer';
-
-/**
- * Module Mail Config Data Interface.
- * @interface zIMail
- * @property {string} from - Mail sender
- * @property {string} to - Mail reciver
- * @property {string} subject - Mail subject
- * @property {string} text - Mail body
- * @property {string} html - Mail body html
- * @author Gabriel Alves <gbrextreme@hotmail.com>
- * @copyright Ivan Antunes 2021
- */
-export interface zIMail {
-    from: string;
-    to: string;
-    subject: string;
-    text: string;
-    html?: string;
-    attachments?: Attachment[];
-}
-
 /**
  * Module Mail Config Transporter Interface.
  * @interface zIMailConfig
