@@ -5,6 +5,7 @@ import { zEFieldTypeDB } from '../enums';
  * Database Table.
  * @interface zITableDB
  * @property {string} tablename - Table Name.
+ * @property {string} tableLabel - Table Label.
  * @property {zIFieldDB} tableFields - Fields contains in table.
  * @property {QueryInterfaceCreateTableOptions} tableOptions - Options cantains in table?
  * @property {boolean} tableLogicalDelete - Use logical delete on the table?
@@ -13,6 +14,7 @@ import { zEFieldTypeDB } from '../enums';
  */
 export interface zITableDB {
     tableName: string;
+    tableLabel?: string;
     tableFields: zIFieldDB[];
     tableOptions?: QueryInterfaceCreateTableOptions;
     tableLogicalDelete?: boolean;
@@ -22,6 +24,7 @@ export interface zITableDB {
  * Database field interface. Using to create database field.
  * @interface zIFieldDB
  * @property {string} fieldName - Field Name
+ * @property {string} fieldLabel - Field Label
  * @property {zEFieldTypeDB} - Field Type
  * @property {boolean} fieldPrimaryKey - Field is Primary key?
  * @property {boolean} fieldRequired - Field is Required?
@@ -42,6 +45,7 @@ export interface zITableDB {
  */
 export interface zIFieldDB {
     fieldName: string;
+    fieldLabel?: string;
     fieldType: zEFieldTypeDB;
     fieldPrimaryKey: boolean;
     fieldRequired: boolean;
@@ -64,12 +68,14 @@ export interface zIFieldDB {
  * @interface zIRelationDB
  * @property {string} tablename - Table Name
  * @property {string} fieldName - Field Name
+ * @property {string} fieldKeyLabel - Field Key Label
  * @author Ivan Antunes <ivanantnes75@gmail.com>
  * @copyright Ivan Antunes 2021
  */
 export interface zIRelationDB {
     tableName: string;
     fieldName: string;
+    fieldKeyLabel: string;
 }
 
 /**
