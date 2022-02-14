@@ -52,7 +52,7 @@ export interface zIFieldDB {
     fieldAllowNull?: boolean;
     fieldAutoIncrement?: boolean;
     fieldUnique?: boolean;
-    fieldDefaultValue?: string;
+    fieldDefaultValue?: any;
     fieldEnumValue?: string[];
     fieldRelation?: zIRelationDB;
     fieldSize?: number;

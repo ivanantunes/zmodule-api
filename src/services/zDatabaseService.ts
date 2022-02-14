@@ -382,8 +382,9 @@ export class zDatabaseService {
                 con.models[field.fieldRelation.tableName],
                 {
                   foreignKey: field.fieldRelation.fieldName,
-                  sourceKey: field.fieldName
-                }
+                  sourceKey: field.fieldName,
+                  onDelete: 'cascade'
+                },
               );
             }
 
