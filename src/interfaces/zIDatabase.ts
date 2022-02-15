@@ -110,6 +110,7 @@ export interface zIAttributeObjectDB {
     allowNull?: boolean;
     unique?: boolean;
     autoIncrement?: boolean;
+    onDelete?: string;
     references?: {
         model: string;
         key: string;

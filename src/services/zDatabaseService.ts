@@ -223,13 +223,14 @@ export class zDatabaseService {
               allowNull: field.fieldAllowNull ? field.fieldAllowNull : false,
               validate: field.fieldValidate,
               defaultValue: field.fieldDefaultValue,
-              unique: field.fieldUnique
+              unique: field.fieldUnique,
+              onDelete: 'cascade'
             };
 
             if (field.fieldRelation) {
               baseAttribute.references = {
                 model: field.fieldRelation.tableName,
-                key: field.fieldRelation.fieldName
+                key: field.fieldRelation.fieldName,
               };
             }
 
@@ -256,6 +257,7 @@ export class zDatabaseService {
                 unique: f.fieldUnique,
                 primaryKey: f.fieldPrimaryKey,
                 autoIncrement: f.fieldAutoIncrement,
+                onDelete: 'cascade'
               }
 
             };
