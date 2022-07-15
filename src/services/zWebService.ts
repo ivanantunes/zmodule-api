@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import express from 'express';
 import { catchError, delay, retryWhen, tap } from 'rxjs/operators';
-import http from 'http';
+import httpServer from 'http';
 import { Server } from 'socket.io';
 
 /**
@@ -47,6 +47,13 @@ export class zWebService {
   private socket: Server | null = null;
 
   /**
+   * Http instance containing the server.
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2022
+   */
+  private http: httpServer.Server | null = null;
+
+  /**
    * Stores if initialized service.
    * @author Ivan Antunes <ivanantnes75@gmail.com>
    * @copyright Ivan Antunes 2021
@@ -63,12 +70,12 @@ export class zWebService {
 
     this.setConfigServer(app).subscribe((currentApp) => {
 
-      const serverHttp = http.createServer(currentApp);
-      this.socket = new Server(serverHttp);
+      this.http = httpServer.createServer(currentApp);
+      this.socket = new Server(this.http);
 
       this.server = currentApp;
 
-      serverHttp.listen(zConfigModule.MOD_SERVER_PORT, () => {
+      this.http.listen(zConfigModule.MOD_SERVER_PORT, () => {
         console.log(`${this.tService.t('web_server_start')} ${zConfigModule.MOD_SERVER_PORT}`);
         this.isInitialized = true;
       });
@@ -156,6 +163,12 @@ export class zWebService {
     );
   }
 
+  /**
+   * Get Instance of Sockets
+   * @returns Observable<Express>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
   public socketInstance(): Observable<Server> {
 
     return (new Observable<Server>((obs) => {
@@ -165,6 +178,35 @@ export class zWebService {
         return obs.complete();
       } else {
         return obs.error(this.tService.t('web_socket_not_initialized'));
+      }
+
+    })).pipe(
+      catchError((err) => {
+        console.log(err);
+        return throwError(err);
+      }),
+      retryWhen((err) => err.pipe(
+        tap(() => console.log(this.tService.t('web_server_try_again'))),
+        delay(5000)
+      ))
+    );
+
+  }
+
+  /**
+   * Get Instance of Http
+   * @returns Observable<Express>
+   * @author Ivan Antunes <ivanantnes75@gmail.com>
+   * @copyright Ivan Antunes 2021
+   */
+  public httpInstance(): Observable<httpServer.Server> {
+    return (new Observable<httpServer.Server>((obs) => {
+
+      if (this.isInitialized) {
+        obs.next(this.http as httpServer.Server);
+        return obs.complete();
+      } else {
+        return obs.error(this.tService.t('web_http_not_initialized'));
       }
 
     })).pipe(
