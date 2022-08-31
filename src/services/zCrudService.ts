@@ -104,9 +104,8 @@ export class zCrudService {
 
     return this.dbService.getConnection().pipe(
       switchMap((con) => {
-
         if (Array.isArray(obj)) {
-          return concat(...obj.map((o) => from(con.models[tableName].create(o, { isNewRecord: true })))).pipe(
+          return concat(...obj.map((o) => from(con.models[tableName].create(o, { isNewRecord: true, transaction })))).pipe(
             toArray()
           ).pipe(
             switchMap((rows) => {
