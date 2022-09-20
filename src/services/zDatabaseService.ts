@@ -52,7 +52,7 @@ export class zDatabaseService {
       console.log(this.tService.t('lbl_db_connection'));
       this.isInitialized = true;
     }, (err) => {
-      throw new Error(`$${this.tService.t('lbl_db_fail_connection')} ${err}`);
+      throw new Error(`${this.tService.t('lbl_db_fail_connection')} ${err}`);
     });
   }
 

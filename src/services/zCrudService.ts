@@ -3,8 +3,7 @@ import { concat, from, Observable, of } from 'rxjs';
 import { zDatabaseService } from './zDatabaseService';
 import { zTranslateService } from './zTranslateService';
 import { zIFilterDataDB, zIRelationDB, zITableDB } from '../interfaces';
-import { Model, ModelCtor, Transaction } from 'sequelize/types';
-import { Op } from 'sequelize';
+import { Model, ModelCtor, Transaction, Op } from 'sequelize';
 
 /**
  * Service that contains the functions related to the crud (create, read, update, delete).
