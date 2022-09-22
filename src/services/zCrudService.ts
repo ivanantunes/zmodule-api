@@ -236,7 +236,11 @@ export class zCrudService {
         filter.table.tableFields.filter((f) => f.fieldRelation).map((field) => {
 
           arrRows.map((row) => {
-            row[(field.fieldRelation as zIRelationDB).tableName] = row[(field.fieldRelation as zIRelationDB).tableName].dataValues;
+
+            if (row[(field.fieldRelation as zIRelationDB).tableName] && row[(field.fieldRelation as zIRelationDB).tableName].dataValues) {
+              row[(field.fieldRelation as zIRelationDB).tableName] = row[(field.fieldRelation as zIRelationDB).tableName].dataValues;
+            }
+
           });
 
         });
@@ -281,7 +285,9 @@ export class zCrudService {
         table.tableFields.filter((f) => f.fieldRelation).map((field) => {
 
           arrRows.map((row) => {
-            row[(field.fieldRelation as zIRelationDB).tableName] = row[(field.fieldRelation as zIRelationDB).tableName].dataValues;
+            if (row[(field.fieldRelation as zIRelationDB).tableName] && row[(field.fieldRelation as zIRelationDB).tableName].dataValues) {
+              row[(field.fieldRelation as zIRelationDB).tableName] = row[(field.fieldRelation as zIRelationDB).tableName].dataValues;
+            }
           });
 
         });
@@ -325,7 +331,9 @@ export class zCrudService {
         table.tableFields.filter((f) => f.fieldRelation).map((field) => {
 
           arrRows.map((row) => {
-            row[(field.fieldRelation as zIRelationDB).tableName] = row[(field.fieldRelation as zIRelationDB).tableName].dataValues;
+            if (row[(field.fieldRelation as zIRelationDB).tableName] && row[(field.fieldRelation as zIRelationDB).tableName].dataValues) {
+              row[(field.fieldRelation as zIRelationDB).tableName] = row[(field.fieldRelation as zIRelationDB).tableName].dataValues;
+            }
           });
 
         });
