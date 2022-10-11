@@ -210,8 +210,8 @@ export class zCrudService {
         switchMap((joins) => from(con.models[filter.table.tableName].findAndCountAll(
           {
             where: {
+              ...customWhere,
               [Op.or]: filterLike,
-              ...customWhere
             },
             include: joins,
             order: [[filter.columnSort, filter.sort]],
