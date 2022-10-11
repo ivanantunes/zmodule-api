@@ -195,7 +195,7 @@ export class zCrudService {
 
         filterLike.push({
           [field.fieldName]: {
-            [Op.like]: `%${filter.search}%`
+            [Op.substring]: `${filter.search}`
           }
         });
 
