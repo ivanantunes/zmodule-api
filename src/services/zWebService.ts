@@ -71,7 +71,7 @@ export class zWebService {
     this.setConfigServer(app).subscribe((currentApp) => {
 
       this.http = httpServer.createServer(currentApp);
-      this.socket = new Server(this.http);
+      this.socket = new Server(this.http, { cors: { origin: '*' } });
 
       this.server = currentApp;
 
