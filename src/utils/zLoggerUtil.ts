@@ -17,7 +17,7 @@ export class zLoggerUtil {
                 trace: 10
             },
         },
-        timestamp: () => new Date().toLocaleString().replace(',', ''),
+        timestamp: true,
     });
 
     private constructor() { }
