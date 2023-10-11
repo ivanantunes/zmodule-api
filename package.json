@@ -1,6 +1,6 @@
 {
   "name": "zmodule-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library created with the concept of facilitating the creation of api.",
   "bin": "lib/index.js",
   "main": "lib/index.js",
