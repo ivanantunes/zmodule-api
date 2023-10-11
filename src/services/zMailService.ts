@@ -3,6 +3,7 @@ import { zIMailConfig } from './../interfaces';
 import { zConfigMail } from '../configs';
 import { zTranslateService } from './zTranslateService';
 import nodemailer, { SendMailOptions } from 'nodemailer';
+import { zLoggerUtil } from '../utils';
 
 /**
  * Module mailing service.
@@ -66,7 +67,7 @@ export class zMailService {
 
             transport.sendMail(mail, (err: any, res: any) => {
                 if (err) {
-                    console.log(`${this.tService.t('gnc_error_send_mail')} ${err.message}`);
+                    zLoggerUtil.error(err, `${this.tService.t('gnc_error_send_mail')}`);
                     obs.error(err.message);
                     obs.complete();
                 } else {
@@ -92,7 +93,7 @@ export class zMailService {
 
             transport.sendMail(mail, (err: any, res: any) => {
                 if (err) {
-                    console.log(`${this.tService.t('gnc_error_send_mail')} ${err.message}`);
+                    zLoggerUtil.error(err, `${this.tService.t('gnc_error_send_mail')}`);
                     obs.error(err.message);
                     obs.complete();
                 } else {

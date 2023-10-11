@@ -22,31 +22,31 @@ export class zLoggerUtil {
 
     private constructor() { }
 
-    public silent(obj: object, msg?: string | undefined, ...args: any[]): void {
+    public static silent(obj: object, msg?: string | undefined, ...args: any[]): void {
         zLoggerUtil.log.silent(obj, msg, args);
     }
 
-    public fatal(obj: object, msg?: string | undefined, ...args: any[]): void {
+    public static fatal(obj: object, msg?: string | undefined, ...args: any[]): void {
         zLoggerUtil.log.fatal(obj, msg, args);
     }
 
-    public error(obj: object, msg?: string | undefined, ...args: any[]): void {
+    public static error(obj: object, msg?: string | undefined, ...args: any[]): void {
         zLoggerUtil.log.error(obj, msg, args);
     }
 
-    public warn(obj: object, msg?: string | undefined, ...args: any[]): void {
+    public static warn(obj: object, msg?: string | undefined, ...args: any[]): void {
         zLoggerUtil.log.warn(obj, msg, args);
     }
 
-    public info(obj: object, msg?: string | undefined, ...args: any[]): void {
+    public static info(obj: object, msg?: string | undefined, ...args: any[]): void {
         zLoggerUtil.log.info(obj, msg, args);
     }
 
-    public debug(obj: object, msg?: string | undefined, ...args: any[]): void {
+    public static debug(obj: object, msg?: string | undefined, ...args: any[]): void {
         zLoggerUtil.log.debug(obj, msg, args);
     }
 
-    public trace(obj: object, msg?: string | undefined, ...args: any[]): void {
+    public static trace(obj: object, msg?: string | undefined, ...args: any[]): void {
         zLoggerUtil.log.trace(obj, msg, args);
     }
 }

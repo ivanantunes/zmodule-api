@@ -4,11 +4,11 @@ import { zTranslateService } from './zTranslateService';
 import { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import bodyParser from 'body-parser';
 import express from 'express';
 import { catchError, delay, retryWhen, tap } from 'rxjs/operators';
 import httpServer from 'http';
 import { Server } from 'socket.io';
+import { zLoggerUtil } from '../utils';
 
 /**
  * Service that contains the functions related to the web service.
@@ -76,7 +76,7 @@ export class zWebService {
       this.server = currentApp;
 
       this.http.listen(zConfigModule.MOD_SERVER_PORT, () => {
-        console.log(`${this.tService.t('web_server_start')} ${zConfigModule.MOD_SERVER_PORT}`);
+        zLoggerUtil.info({}, `${this.tService.t('web_server_start')} ${zConfigModule.MOD_SERVER_PORT}`);
         this.isInitialized = true;
       });
 
@@ -153,11 +153,11 @@ export class zWebService {
 
     })).pipe(
       catchError((err) => {
-        console.log(err);
+        zLoggerUtil.error(err);
         return throwError(err);
       }),
       retryWhen((err) => err.pipe(
-        tap(() => console.log(this.tService.t('web_server_try_again'))),
+        tap(() => zLoggerUtil.info({}, this.tService.t('web_server_try_again'))),
         delay(5000)
       ))
     );
@@ -182,11 +182,11 @@ export class zWebService {
 
     })).pipe(
       catchError((err) => {
-        console.log(err);
+        zLoggerUtil.error(err);
         return throwError(err);
       }),
       retryWhen((err) => err.pipe(
-        tap(() => console.log(this.tService.t('web_server_try_again'))),
+        tap(() => zLoggerUtil.info({}, this.tService.t('web_server_try_again'))),
         delay(5000)
       ))
     );
@@ -211,11 +211,11 @@ export class zWebService {
 
     })).pipe(
       catchError((err) => {
-        console.log(err);
+        zLoggerUtil.error(err);
         return throwError(err);
       }),
       retryWhen((err) => err.pipe(
-        tap(() => console.log(this.tService.t('web_server_try_again'))),
+        tap(() => zLoggerUtil.info({}, this.tService.t('web_server_try_again'))),
         delay(5000)
       ))
     );
