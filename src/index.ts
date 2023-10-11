@@ -10,3 +10,4 @@ export * from './enums';
 export * from './interfaces';
 export * from './locale';
 export * from './services';
+export * from './utils';
