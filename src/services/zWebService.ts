@@ -123,7 +123,7 @@ export class zWebService {
   private setConfigServer(server: Express): Observable<Express> {
     server.use(cors({maxAge: 86000}));
 
-    server.use(helmet());
+    // server.use(helmet());
 
     server.use(express.json({limit: '100mb'}));
     server.use(express.urlencoded({
