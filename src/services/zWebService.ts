@@ -9,6 +9,7 @@ import { catchError, delay, retryWhen, tap } from 'rxjs/operators';
 import httpServer from 'http';
 import { Server } from 'socket.io';
 import { zLoggerUtil } from '../utils';
+import { AddressInfo } from 'net';
 
 /**
  * Service that contains the functions related to the web service.
@@ -75,8 +76,8 @@ export class zWebService {
 
       this.server = currentApp;
 
-      this.http.listen(zConfigModule.MOD_SERVER_PORT, () => {
-        zLoggerUtil.info({}, `${this.tService.t('web_server_start')} ${zConfigModule.MOD_SERVER_PORT}`);
+      this.http.listen(zConfigModule.MOD_SERVER_PORT, '0.0.0.0', () => {
+        zLoggerUtil.info({}, `${this.tService.t('web_server_start')} ${(this.http?.address() as AddressInfo).port}`);
         this.isInitialized = true;
       });
 
